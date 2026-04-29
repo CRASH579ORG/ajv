@@ -11,8 +11,8 @@ import {alwaysValidSchema, Type} from "../../compile/util"
 export type UnevaluatedItemsError = ErrorObject<"unevaluatedItems", {limit: number}, AnySchema>
 
 const error: KeywordErrorDefinition = {
-  message: ({params: {len}}) => str`must NOT have more than ${len} items`,
-  params: ({params: {len}}) => _`{limit: ${len}}`,
+  message: ({params: {len}}) => { throw new Error("STUB"); },
+  params: ({params: {len}}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -30,15 +30,14 @@ const def: CodeKeywordDefinition = {
       cxt.fail(_`${len} > ${items}`)
     } else if (typeof schema == "object" && !alwaysValidSchema(it, schema)) {
       const valid = gen.var("valid", _`${len} <= ${items}`)
-      gen.if(not(valid), () => validateItems(valid, items))
+      gen.if(not(valid), () => { throw new Error("STUB"); })
       cxt.ok(valid)
     }
     it.items = true
 
     function validateItems(valid: Name, from: Name | number): void {
       gen.forRange("i", from, len, (i) => {
-        cxt.subschema({keyword: "unevaluatedItems", dataProp: i, dataPropType: Type.Num}, valid)
-        if (!it.allErrors) gen.if(not(valid), () => gen.break())
+          throw new Error("STUB");
       })
     }
   },

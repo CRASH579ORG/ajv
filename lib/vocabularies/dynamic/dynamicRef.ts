@@ -7,7 +7,7 @@ import {callRef} from "../core/ref"
 const def: CodeKeywordDefinition = {
   keyword: "$dynamicRef",
   schemaType: "string",
-  code: (cxt) => dynamicRef(cxt, cxt.schema),
+  code: (cxt) => { throw new Error("STUB"); },
 }
 
 export function dynamicRef(cxt: KeywordCxt, ref: string): void {
@@ -40,11 +40,8 @@ export function dynamicRef(cxt: KeywordCxt, ref: string): void {
   function _callRef(validate: Code, valid?: Name): () => void {
     return valid
       ? () =>
-          gen.block(() => {
-            callRef(cxt, validate)
-            gen.let(valid, true)
-          })
-      : () => callRef(cxt, validate)
+          { throw new Error("STUB"); }
+      : () => { throw new Error("STUB"); }
   }
 }
 

@@ -17,8 +17,8 @@ export type RequiredError = ErrorObject<
 >
 
 const error: KeywordErrorDefinition = {
-  message: ({params: {missingProperty}}) => str`must have required property '${missingProperty}'`,
-  params: ({params: {missingProperty}}) => _`{missingProperty: ${missingProperty}}`,
+  message: ({params: {missingProperty}}) => { throw new Error("STUB"); },
+  params: ({params: {missingProperty}}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -61,7 +61,7 @@ const def: CodeKeywordDefinition = {
       const missing = gen.let("missing")
       if (useLoop || $data) {
         const valid = gen.let("valid", true)
-        cxt.block$data(valid, () => loopUntilMissing(missing, valid))
+        cxt.block$data(valid, () => { throw new Error("STUB"); })
         cxt.ok(valid)
       } else {
         gen.if(checkMissingProp(cxt, schema, missing))
@@ -71,10 +71,7 @@ const def: CodeKeywordDefinition = {
     }
 
     function loopAllRequired(): void {
-      gen.forOf("prop", schemaCode as Code, (prop) => {
-        cxt.setParams({missingProperty: prop})
-        gen.if(noPropertyInData(gen, data, prop, opts.ownProperties), () => cxt.error())
-      })
+        throw new Error("STUB");
     }
 
     function loopUntilMissing(missing: Name, valid: Name): void {
@@ -83,11 +80,7 @@ const def: CodeKeywordDefinition = {
         missing,
         schemaCode as Code,
         () => {
-          gen.assign(valid, propertyInData(gen, data, missing, opts.ownProperties))
-          gen.if(not(valid), () => {
-            cxt.error()
-            gen.break()
-          })
+            throw new Error("STUB");
         },
         nil
       )

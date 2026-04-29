@@ -90,17 +90,7 @@ export class SchemaEnv implements SchemaEnvArgs {
   parseName?: ValueScopeName
 
   constructor(env: SchemaEnvArgs) {
-    let schema: AnySchemaObject | undefined
-    if (typeof env.schema == "object") schema = env.schema
-    this.schema = env.schema
-    this.schemaId = env.schemaId
-    this.root = env.root || this
-    this.baseId = env.baseId ?? normalizeId(schema?.[env.schemaId || "$id"])
-    this.schemaPath = env.schemaPath
-    this.localRefs = env.localRefs
-    this.meta = env.meta
-    this.$async = schema?.$async
-    this.refs = {}
+      throw new Error("STUB");
   }
 }
 
@@ -109,97 +99,7 @@ export class SchemaEnv implements SchemaEnvArgs {
 
 // Compiles schema in SchemaEnv
 export function compileSchema(this: Ajv, sch: SchemaEnv): SchemaEnv {
-  // TODO refactor - remove compilations
-  const _sch = getCompilingSchema.call(this, sch)
-  if (_sch) return _sch
-  const rootId = getFullPath(this.opts.uriResolver, sch.root.baseId) // TODO if getFullPath removed 1 tests fails
-  const {es5, lines} = this.opts.code
-  const {ownProperties} = this.opts
-  const gen = new CodeGen(this.scope, {es5, lines, ownProperties})
-  let _ValidationError
-  if (sch.$async) {
-    _ValidationError = gen.scopeValue("Error", {
-      ref: ValidationError,
-      code: _`require("ajv/dist/runtime/validation_error").default`,
-    })
-  }
-
-  const validateName = gen.scopeName("validate")
-  sch.validateName = validateName
-
-  const schemaCxt: SchemaCxt = {
-    gen,
-    allErrors: this.opts.allErrors,
-    data: N.data,
-    parentData: N.parentData,
-    parentDataProperty: N.parentDataProperty,
-    dataNames: [N.data],
-    dataPathArr: [nil], // TODO can its length be used as dataLevel if nil is removed?
-    dataLevel: 0,
-    dataTypes: [],
-    definedProperties: new Set<string>(),
-    topSchemaRef: gen.scopeValue(
-      "schema",
-      this.opts.code.source === true
-        ? {ref: sch.schema, code: stringify(sch.schema)}
-        : {ref: sch.schema}
-    ),
-    validateName,
-    ValidationError: _ValidationError,
-    schema: sch.schema,
-    schemaEnv: sch,
-    rootId,
-    baseId: sch.baseId || rootId,
-    schemaPath: nil,
-    errSchemaPath: sch.schemaPath || (this.opts.jtd ? "" : "#"),
-    errorPath: _`""`,
-    opts: this.opts,
-    self: this,
-  }
-
-  let sourceCode: string | undefined
-  try {
-    this._compilations.add(sch)
-    validateFunctionCode(schemaCxt)
-    gen.optimize(this.opts.code.optimize)
-    // gen.optimize(1)
-    const validateCode = gen.toString()
-    sourceCode = `${gen.scopeRefs(N.scope)}return ${validateCode}`
-    // console.log((codeSize += sourceCode.length), (nodeCount += gen.nodeCount))
-    if (this.opts.code.process) sourceCode = this.opts.code.process(sourceCode, sch)
-    // console.log("\n\n\n *** \n", sourceCode)
-    const makeValidate = new Function(`${N.self}`, `${N.scope}`, sourceCode)
-    const validate: AnyValidateFunction = makeValidate(this, this.scope.get())
-    this.scope.value(validateName, {ref: validate})
-
-    validate.errors = null
-    validate.schema = sch.schema
-    validate.schemaEnv = sch
-    if (sch.$async) (validate as AsyncValidateFunction).$async = true
-    if (this.opts.code.source === true) {
-      validate.source = {validateName, validateCode, scopeValues: gen._values}
-    }
-    if (this.opts.unevaluated) {
-      const {props, items} = schemaCxt
-      validate.evaluated = {
-        props: props instanceof Name ? undefined : props,
-        items: items instanceof Name ? undefined : items,
-        dynamicProps: props instanceof Name,
-        dynamicItems: items instanceof Name,
-      }
-      if (validate.source) validate.source.evaluated = stringify(validate.evaluated)
-    }
-    sch.validate = validate
-    return sch
-  } catch (e) {
-    delete sch.validate
-    delete sch.validateName
-    if (sourceCode) this.logger.error("Error compiling schema, function code:", sourceCode)
-    // console.log("\n\n\n *** \n", sourceCode, this.opts)
-    throw e
-  } finally {
-    this._compilations.delete(sch)
-  }
+    throw new Error("STUB");
 }
 
 export function resolveRef(
@@ -208,35 +108,20 @@ export function resolveRef(
   baseId: string,
   ref: string
 ): AnySchema | SchemaEnv | undefined {
-  ref = resolveUrl(this.opts.uriResolver, baseId, ref)
-  const schOrFunc = root.refs[ref]
-  if (schOrFunc) return schOrFunc
-
-  let _sch = resolve.call(this, root, ref)
-  if (_sch === undefined) {
-    const schema = root.localRefs?.[ref] // TODO maybe localRefs should hold SchemaEnv
-    const {schemaId} = this.opts
-    if (schema) _sch = new SchemaEnv({schema, schemaId, root, baseId})
-  }
-
-  if (_sch === undefined) return
-  return (root.refs[ref] = inlineOrCompile.call(this, _sch))
+    throw new Error("STUB");
 }
 
 function inlineOrCompile(this: Ajv, sch: SchemaEnv): AnySchema | SchemaEnv {
-  if (inlineRef(sch.schema, this.opts.inlineRefs)) return sch.schema
-  return sch.validate ? sch : compileSchema.call(this, sch)
+    throw new Error("STUB");
 }
 
 // Index of schema compilation in the currently compiled list
 export function getCompilingSchema(this: Ajv, schEnv: SchemaEnv): SchemaEnv | void {
-  for (const sch of this._compilations) {
-    if (sameSchemaEnv(sch, schEnv)) return sch
-  }
+    throw new Error("STUB");
 }
 
 function sameSchemaEnv(s1: SchemaEnv, s2: SchemaEnv): boolean {
-  return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId
+    throw new Error("STUB");
 }
 
 // resolve and compile the references ($ref)
@@ -257,32 +142,7 @@ export function resolveSchema(
   root: SchemaEnv, // root object with properties schema, refs TODO below SchemaEnv is assigned to it
   ref: string // reference to resolve
 ): SchemaEnv | undefined {
-  const p = this.opts.uriResolver.parse(ref)
-  const refPath = _getFullPath(this.opts.uriResolver, p)
-  let baseId = getFullPath(this.opts.uriResolver, root.baseId, undefined)
-  // TODO `Object.keys(root.schema).length > 0` should not be needed - but removing breaks 2 tests
-  if (Object.keys(root.schema).length > 0 && refPath === baseId) {
-    return getJsonPointer.call(this, p, root)
-  }
-
-  const id = normalizeId(refPath)
-  const schOrRef = this.refs[id] || this.schemas[id]
-  if (typeof schOrRef == "string") {
-    const sch = resolveSchema.call(this, root, schOrRef)
-    if (typeof sch?.schema !== "object") return
-    return getJsonPointer.call(this, p, sch)
-  }
-
-  if (typeof schOrRef?.schema !== "object") return
-  if (!schOrRef.validate) compileSchema.call(this, schOrRef)
-  if (id === normalizeId(ref)) {
-    const {schema} = schOrRef
-    const {schemaId} = this.opts
-    const schId = schema[schemaId]
-    if (schId) baseId = resolveUrl(this.opts.uriResolver, baseId, schId)
-    return new SchemaEnv({schema, schemaId, root, baseId})
-  }
-  return getJsonPointer.call(this, p, schOrRef)
+    throw new Error("STUB");
 }
 
 const PREVENT_SCOPE_CHANGE = new Set([
@@ -298,27 +158,5 @@ function getJsonPointer(
   parsedRef: URIComponent,
   {baseId, schema, root}: SchemaEnv
 ): SchemaEnv | undefined {
-  if (parsedRef.fragment?.[0] !== "/") return
-  for (const part of parsedRef.fragment.slice(1).split("/")) {
-    if (typeof schema === "boolean") return
-    const partSchema = schema[unescapeFragment(part)]
-    if (partSchema === undefined) return
-    schema = partSchema
-    // TODO PREVENT_SCOPE_CHANGE could be defined in keyword def?
-    const schId = typeof schema === "object" && schema[this.opts.schemaId]
-    if (!PREVENT_SCOPE_CHANGE.has(part) && schId) {
-      baseId = resolveUrl(this.opts.uriResolver, baseId, schId)
-    }
-  }
-  let env: SchemaEnv | undefined
-  if (typeof schema != "boolean" && schema.$ref && !schemaHasRulesButRef(schema, this.RULES)) {
-    const $ref = resolveUrl(this.opts.uriResolver, baseId, schema.$ref)
-    env = resolveSchema.call(this, root, $ref)
-  }
-  // even though resolution failed we need to return SchemaEnv to throw exception
-  // so that compileAsync loads missing schema.
-  const {schemaId} = this.opts
-  env = env || new SchemaEnv({schema, schemaId, root, baseId})
-  if (env.schema !== env.root.schema) return env
-  return undefined
+    throw new Error("STUB");
 }

@@ -19,7 +19,7 @@ export type AdditionalPropertiesError = ErrorObject<
 
 const error: KeywordErrorDefinition = {
   message: "must NOT have additional properties",
-  params: ({params}) => _`{additionalProperty: ${params.additionalProperty}}`,
+  params: ({params}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition & AddedKeywordDefinition = {
@@ -43,8 +43,7 @@ const def: CodeKeywordDefinition & AddedKeywordDefinition = {
 
     function checkAdditionalProperties(): void {
       gen.forIn("key", data, (key: Name) => {
-        if (!props.length && !patProps.length) additionalPropertyCode(key)
-        else gen.if(isAdditional(key), () => additionalPropertyCode(key))
+          throw new Error("STUB");
       })
     }
 
@@ -55,12 +54,12 @@ const def: CodeKeywordDefinition & AddedKeywordDefinition = {
         const propsSchema = schemaRefOrVal(it, parentSchema.properties, "properties")
         definedProp = isOwnProperty(gen, propsSchema as Code, key)
       } else if (props.length) {
-        definedProp = or(...props.map((p) => _`${key} === ${p}`))
+        definedProp = or(...props.map((p) => { throw new Error("STUB"); }))
       } else {
         definedProp = nil
       }
       if (patProps.length) {
-        definedProp = or(definedProp, ...patProps.map((p) => _`${usePattern(cxt, p)}.test(${key})`))
+        definedProp = or(definedProp, ...patProps.map((p) => { throw new Error("STUB"); }))
       }
       return not(definedProp)
     }
@@ -87,12 +86,11 @@ const def: CodeKeywordDefinition & AddedKeywordDefinition = {
         if (opts.removeAdditional === "failing") {
           applyAdditionalSchema(key, valid, false)
           gen.if(not(valid), () => {
-            cxt.reset()
-            deleteAdditional(key)
+              throw new Error("STUB");
           })
         } else {
           applyAdditionalSchema(key, valid)
-          if (!allErrors) gen.if(not(valid), () => gen.break())
+          if (!allErrors) gen.if(not(valid), () => { throw new Error("STUB"); })
         }
       }
     }

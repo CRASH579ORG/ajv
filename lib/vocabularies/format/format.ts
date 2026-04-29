@@ -21,8 +21,8 @@ type FormatValidate =
 export type FormatError = ErrorObject<"format", {format: string}, string | {$data: string}>
 
 const error: KeywordErrorDefinition = {
-  message: ({schemaCode}) => str`must match format "${schemaCode}"`,
-  params: ({schemaCode}) => _`{format: ${schemaCode}}`,
+  message: ({schemaCode}) => { throw new Error("STUB"); },
+  params: ({schemaCode}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -50,8 +50,8 @@ const def: CodeKeywordDefinition = {
       // TODO simplify
       gen.if(
         _`typeof ${fDef} == "object" && !(${fDef} instanceof RegExp)`,
-        () => gen.assign(fType, _`${fDef}.type || "string"`).assign(format, _`${fDef}.validate`),
-        () => gen.assign(fType, _`"string"`).assign(format, fDef)
+        () => { throw new Error("STUB"); },
+        () => { throw new Error("STUB"); }
       )
       cxt.fail$data(or(unknownFmt(), invalidFmt()))
 

@@ -9,8 +9,8 @@ export type _JTDTypeError<K extends string, T extends string, S> = ErrorObject<
 
 export function typeError(t: string): KeywordErrorDefinition {
   return {
-    message: (cxt) => typeErrorMessage(cxt, t),
-    params: (cxt) => typeErrorParams(cxt, t),
+    message: (cxt) => { throw new Error("STUB"); },
+    params: (cxt) => { throw new Error("STUB"); },
   }
 }
 

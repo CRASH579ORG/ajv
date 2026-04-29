@@ -13,8 +13,8 @@ import {validateAdditionalItems} from "./additionalItems"
 export type ItemsError = ErrorObject<"items", {limit: number}, AnySchema>
 
 const error: KeywordErrorDefinition = {
-  message: ({params: {len}}) => str`must NOT have more than ${len} items`,
-  params: ({params: {len}}) => _`{limit: ${len}}`,
+  message: ({params: {len}}) => { throw new Error("STUB"); },
+  params: ({params: {len}}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {

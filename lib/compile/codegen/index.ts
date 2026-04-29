@@ -28,11 +28,11 @@ abstract class Node {
   abstract readonly names: UsedNames
 
   optimizeNodes(): this | ChildNode | ChildNode[] | undefined {
-    return this
+      throw new Error("STUB");
   }
 
   optimizeNames(_names: UsedNames, _constants: Constants): this | undefined {
-    return this
+      throw new Error("STUB");
   }
 
   // get count(): number {
@@ -56,13 +56,11 @@ class Def extends Node {
   }
 
   optimizeNames(names: UsedNames, constants: Constants): this | undefined {
-    if (!names[this.name.str]) return
-    if (this.rhs) this.rhs = optimizeExpr(this.rhs, names, constants)
-    return this
+      throw new Error("STUB");
   }
 
   get names(): UsedNames {
-    return this.rhs instanceof _CodeOrName ? this.rhs.names : {}
+      throw new Error("STUB");
   }
 }
 
@@ -80,14 +78,11 @@ class Assign extends Node {
   }
 
   optimizeNames(names: UsedNames, constants: Constants): this | undefined {
-    if (this.lhs instanceof Name && !names[this.lhs.str] && !this.sideEffects) return
-    this.rhs = optimizeExpr(this.rhs, names, constants)
-    return this
+      throw new Error("STUB");
   }
 
   get names(): UsedNames {
-    const names = this.lhs instanceof Name ? {} : {...this.lhs.names}
-    return addExprNames(names, this.rhs)
+      throw new Error("STUB");
   }
 }
 
@@ -139,7 +134,7 @@ class Throw extends Node {
   }
 
   get names(): UsedNames {
-    return this.error.names
+      throw new Error("STUB");
   }
 }
 
@@ -153,16 +148,15 @@ class AnyCode extends Node {
   }
 
   optimizeNodes(): this | undefined {
-    return `${this.code}` ? this : undefined
+      throw new Error("STUB");
   }
 
   optimizeNames(names: UsedNames, constants: Constants): this {
-    this.code = optimizeExpr(this.code, names, constants)
-    return this
+      throw new Error("STUB");
   }
 
   get names(): UsedNames {
-    return this.code instanceof _CodeOrName ? this.code.names : {}
+      throw new Error("STUB");
   }
 }
 
@@ -172,36 +166,19 @@ abstract class ParentNode extends Node {
   }
 
   render(opts: CGOptions): string {
-    return this.nodes.reduce((code, n) => code + n.render(opts), "")
+    return this.nodes.reduce((code, n) => { throw new Error("STUB"); }, "")
   }
 
   optimizeNodes(): this | ChildNode | ChildNode[] | undefined {
-    const {nodes} = this
-    let i = nodes.length
-    while (i--) {
-      const n = nodes[i].optimizeNodes()
-      if (Array.isArray(n)) nodes.splice(i, 1, ...n)
-      else if (n) nodes[i] = n
-      else nodes.splice(i, 1)
-    }
-    return nodes.length > 0 ? this : undefined
+      throw new Error("STUB");
   }
 
   optimizeNames(names: UsedNames, constants: Constants): this | undefined {
-    const {nodes} = this
-    let i = nodes.length
-    while (i--) {
-      // iterating backwards improves 1-pass optimization
-      const n = nodes[i]
-      if (n.optimizeNames(names, constants)) continue
-      subtractNames(names, n.names)
-      nodes.splice(i, 1)
-    }
-    return nodes.length > 0 ? this : undefined
+      throw new Error("STUB");
   }
 
   get names(): UsedNames {
-    return this.nodes.reduce((names: UsedNames, n) => addNames(names, n.names), {})
+      throw new Error("STUB");
   }
 
   // get count(): number {
@@ -238,35 +215,15 @@ class If extends BlockNode {
   }
 
   optimizeNodes(): If | ChildNode[] | undefined {
-    super.optimizeNodes()
-    const cond = this.condition
-    if (cond === true) return this.nodes // else is ignored here
-    let e = this.else
-    if (e) {
-      const ns = e.optimizeNodes()
-      e = this.else = Array.isArray(ns) ? new Else(ns) : (ns as Else | undefined)
-    }
-    if (e) {
-      if (cond === false) return e instanceof If ? e : e.nodes
-      if (this.nodes.length) return this
-      return new If(not(cond), e instanceof If ? [e] : e.nodes)
-    }
-    if (cond === false || !this.nodes.length) return undefined
-    return this
+      throw new Error("STUB");
   }
 
   optimizeNames(names: UsedNames, constants: Constants): this | undefined {
-    this.else = this.else?.optimizeNames(names, constants)
-    if (!(super.optimizeNames(names, constants) || this.else)) return
-    this.condition = optimizeExpr(this.condition, names, constants)
-    return this
+      throw new Error("STUB");
   }
 
   get names(): UsedNames {
-    const names = super.names
-    addExprNames(names, this.condition)
-    if (this.else) addNames(names, this.else.names)
-    return names
+      throw new Error("STUB");
   }
 
   // get count(): number {
@@ -288,13 +245,11 @@ class ForLoop extends For {
   }
 
   optimizeNames(names: UsedNames, constants: Constants): this | undefined {
-    if (!super.optimizeNames(names, constants)) return
-    this.iteration = optimizeExpr(this.iteration, names, constants)
-    return this
+      throw new Error("STUB");
   }
 
   get names(): UsedNames {
-    return addNames(super.names, this.iteration.names)
+      throw new Error("STUB");
   }
 }
 
@@ -315,8 +270,7 @@ class ForRange extends For {
   }
 
   get names(): UsedNames {
-    const names = addExprNames(super.names, this.from)
-    return addExprNames(names, this.to)
+      throw new Error("STUB");
   }
 }
 
@@ -335,13 +289,11 @@ class ForIter extends For {
   }
 
   optimizeNames(names: UsedNames, constants: Constants): this | undefined {
-    if (!super.optimizeNames(names, constants)) return
-    this.iterable = optimizeExpr(this.iterable, names, constants)
-    return this
+      throw new Error("STUB");
   }
 
   get names(): UsedNames {
-    return addNames(super.names, this.iterable.names)
+      throw new Error("STUB");
   }
 }
 
@@ -381,24 +333,15 @@ class Try extends BlockNode {
   }
 
   optimizeNodes(): this {
-    super.optimizeNodes()
-    this.catch?.optimizeNodes() as Catch | undefined
-    this.finally?.optimizeNodes() as Finally | undefined
-    return this
+      throw new Error("STUB");
   }
 
   optimizeNames(names: UsedNames, constants: Constants): this {
-    super.optimizeNames(names, constants)
-    this.catch?.optimizeNames(names, constants)
-    this.finally?.optimizeNames(names, constants)
-    return this
+      throw new Error("STUB");
   }
 
   get names(): UsedNames {
-    const names = super.names
-    if (this.catch) addNames(names, this.catch.names)
-    if (this.finally) addNames(names, this.finally.names)
-    return names
+      throw new Error("STUB");
   }
 
   // get count(): number {
@@ -478,7 +421,7 @@ export class CodeGen {
 
   // reserves unique name in the external scope
   scopeName(prefix: string): ValueScopeName {
-    return this._extScope.name(prefix)
+      throw new Error("STUB");
   }
 
   // reserves unique name in the external scope and assigns value to it
@@ -490,13 +433,13 @@ export class CodeGen {
   }
 
   getScopeValue(prefix: string, keyOrRef: unknown): ValueScopeName | undefined {
-    return this._extScope.getValue(prefix, keyOrRef)
+      throw new Error("STUB");
   }
 
   // return code that assigns values in the external scope to the names that are used internally
   // (same names that were returned by gen.scopeName or gen.scopeValue)
   scopeRefs(scopeName: Name): Code {
-    return this._extScope.scopeRefs(scopeName, this._values)
+      throw new Error("STUB");
   }
 
   scopeCode(): Code {
@@ -611,7 +554,7 @@ export class CodeGen {
     varKind: Code = this.opts.es5 ? varKinds.var : varKinds.let
   ): CodeGen {
     const name = this._scope.toName(nameOrPrefix)
-    return this._for(new ForRange(varKind, name, from, to), () => forBody(name))
+    return this._for(new ForRange(varKind, name, from, to), () => { throw new Error("STUB"); })
   }
 
   // `for-of` statement (in es5 mode replace with a normal for loop)
@@ -625,11 +568,10 @@ export class CodeGen {
     if (this.opts.es5) {
       const arr = iterable instanceof Name ? iterable : this.var("_arr", iterable)
       return this.forRange("_i", 0, _`${arr}.length`, (i) => {
-        this.var(name, _`${arr}[${i}]`)
-        forBody(name)
+          throw new Error("STUB");
       })
     }
-    return this._for(new ForIter("of", varKind, name, iterable), () => forBody(name))
+    return this._for(new ForIter("of", varKind, name, iterable), () => { throw new Error("STUB"); })
   }
 
   // `for-in` statement.
@@ -644,12 +586,12 @@ export class CodeGen {
       return this.forOf(nameOrPrefix, _`Object.keys(${obj})`, forBody)
     }
     const name = this._scope.toName(nameOrPrefix)
-    return this._for(new ForIter("in", varKind, name, obj), () => forBody(name))
+    return this._for(new ForIter("in", varKind, name, obj), () => { throw new Error("STUB"); })
   }
 
   // end `for` loop
   endFor(): CodeGen {
-    return this._endBlockNode(For)
+      throw new Error("STUB");
   }
 
   // `label` statement
@@ -703,33 +645,21 @@ export class CodeGen {
 
   // end the current self-balancing block
   endBlock(nodeCount?: number): CodeGen {
-    const len = this._blockStarts.pop()
-    if (len === undefined) throw new Error("CodeGen: not in self-balancing block")
-    const toClose = this._nodes.length - len
-    if (toClose < 0 || (nodeCount !== undefined && toClose !== nodeCount)) {
-      throw new Error(`CodeGen: wrong number of nodes: ${toClose} vs ${nodeCount} expected`)
-    }
-    this._nodes.length = len
-    return this
+      throw new Error("STUB");
   }
 
   // `function` heading (or definition if funcBody is passed)
   func(name: Name, args: Code = nil, async?: boolean, funcBody?: Block): CodeGen {
-    this._blockNode(new Func(name, args, async))
-    if (funcBody) this.code(funcBody).endFunc()
-    return this
+      throw new Error("STUB");
   }
 
   // end function definition
   endFunc(): CodeGen {
-    return this._endBlockNode(Func)
+      throw new Error("STUB");
   }
 
   optimize(n = 1): void {
-    while (n-- > 0) {
-      this._root.optimizeNodes()
-      this._root.optimizeNames(this._root.names, this._constants)
-    }
+      throw new Error("STUB");
   }
 
   private _leafNode(node: LeafNode): CodeGen {
@@ -761,17 +691,15 @@ export class CodeGen {
   }
 
   private get _root(): Root {
-    return this._nodes[0] as Root
+      throw new Error("STUB");
   }
 
   private get _currNode(): ParentNode {
-    const ns = this._nodes
-    return ns[ns.length - 1]
+      throw new Error("STUB");
   }
 
   private set _currNode(node: ParentNode) {
-    const ns = this._nodes
-    ns[ns.length - 1] = node
+      throw new Error("STUB");
   }
 
   // get nodeCount(): number {
@@ -780,46 +708,20 @@ export class CodeGen {
 }
 
 function addNames(names: UsedNames, from: UsedNames): UsedNames {
-  for (const n in from) names[n] = (names[n] || 0) + (from[n] || 0)
-  return names
+    throw new Error("STUB");
 }
 
 function addExprNames(names: UsedNames, from: SafeExpr): UsedNames {
-  return from instanceof _CodeOrName ? addNames(names, from.names) : names
+    throw new Error("STUB");
 }
 
 function optimizeExpr<T extends SafeExpr | Code>(expr: T, names: UsedNames, constants: Constants): T
 function optimizeExpr(expr: SafeExpr, names: UsedNames, constants: Constants): SafeExpr {
-  if (expr instanceof Name) return replaceName(expr)
-  if (!canOptimize(expr)) return expr
-  return new _Code(
-    expr._items.reduce((items: CodeItem[], c: SafeExpr | string) => {
-      if (c instanceof Name) c = replaceName(c)
-      if (c instanceof _Code) items.push(...c._items)
-      else items.push(c)
-      return items
-    }, [])
-  )
-
-  function replaceName(n: Name): SafeExpr {
-    const c = constants[n.str]
-    if (c === undefined || names[n.str] !== 1) return n
-    delete names[n.str]
-    return c
-  }
-
-  function canOptimize(e: SafeExpr): e is _Code {
-    return (
-      e instanceof _Code &&
-      e._items.some(
-        (c) => c instanceof Name && names[c.str] === 1 && constants[c.str] !== undefined
-      )
-    )
-  }
+    throw new Error("STUB");
 }
 
 function subtractNames(names: UsedNames, from: UsedNames): void {
-  for (const n in from) names[n] = (names[n] || 0) - (from[n] || 0)
+    throw new Error("STUB");
 }
 
 export function not<T extends Code | SafeExpr>(x: T): T
@@ -844,7 +746,7 @@ export function or(...args: Code[]): Code {
 type MAppend = (x: Code, y: Code) => Code
 
 function mappend(op: Code): MAppend {
-  return (x, y) => (x === nil ? y : y === nil ? x : _`${par(x)} ${op} ${par(y)}`)
+  return (x, y) => { throw new Error("STUB"); }
 }
 
 function par(x: Code): Code {

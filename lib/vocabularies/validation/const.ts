@@ -8,7 +8,7 @@ export type ConstError = ErrorObject<"const", {allowedValue: any}>
 
 const error: KeywordErrorDefinition = {
   message: "must be equal to constant",
-  params: ({schemaCode}) => _`{allowedValue: ${schemaCode}}`,
+  params: ({schemaCode}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {

@@ -16,51 +16,15 @@ const shared: MetaSchema = (root) => {
   return sch
 }
 
-const emptyForm: MetaSchema = (root) => ({
-  optionalProperties: shared(root),
-})
+const emptyForm: MetaSchema = (root) => { throw new Error("STUB"); }
 
-const refForm: MetaSchema = (root) => ({
-  properties: {
-    ref: {type: "string"},
-  },
-  optionalProperties: shared(root),
-})
+const refForm: MetaSchema = (root) => { throw new Error("STUB"); }
 
-const typeForm: MetaSchema = (root) => ({
-  properties: {
-    type: {
-      enum: [
-        "boolean",
-        "timestamp",
-        "string",
-        "float32",
-        "float64",
-        "int8",
-        "uint8",
-        "int16",
-        "uint16",
-        "int32",
-        "uint32",
-      ],
-    },
-  },
-  optionalProperties: shared(root),
-})
+const typeForm: MetaSchema = (root) => { throw new Error("STUB"); }
 
-const enumForm: MetaSchema = (root) => ({
-  properties: {
-    enum: {elements: {type: "string"}},
-  },
-  optionalProperties: shared(root),
-})
+const enumForm: MetaSchema = (root) => { throw new Error("STUB"); }
 
-const elementsForm: MetaSchema = (root) => ({
-  properties: {
-    elements: {ref: "schema"},
-  },
-  optionalProperties: shared(root),
-})
+const elementsForm: MetaSchema = (root) => { throw new Error("STUB"); }
 
 const propertiesForm: MetaSchema = (root) => ({
   properties: {
@@ -83,26 +47,9 @@ const optionalPropertiesForm: MetaSchema = (root) => ({
   },
 })
 
-const discriminatorForm: MetaSchema = (root) => ({
-  properties: {
-    discriminator: {type: "string"},
-    mapping: {
-      values: {
-        metadata: {
-          union: [propertiesForm(false), optionalPropertiesForm(false)],
-        },
-      },
-    },
-  },
-  optionalProperties: shared(root),
-})
+const discriminatorForm: MetaSchema = (root) => { throw new Error("STUB"); }
 
-const valuesForm: MetaSchema = (root) => ({
-  properties: {
-    values: {ref: "schema"},
-  },
-  optionalProperties: shared(root),
-})
+const valuesForm: MetaSchema = (root) => { throw new Error("STUB"); }
 
 const schema: MetaSchema = (root) => ({
   metadata: {
@@ -116,7 +63,7 @@ const schema: MetaSchema = (root) => ({
       optionalPropertiesForm,
       discriminatorForm,
       valuesForm,
-    ].map((s) => s(root)),
+    ].map((s) => { throw new Error("STUB"); }),
   },
 })
 

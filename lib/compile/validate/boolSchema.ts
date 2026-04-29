@@ -9,15 +9,7 @@ const boolError: KeywordErrorDefinition = {
 }
 
 export function topBoolOrEmptySchema(it: SchemaCxt): void {
-  const {gen, schema, validateName} = it
-  if (schema === false) {
-    falseSchemaError(it, false)
-  } else if (typeof schema == "object" && schema.$async === true) {
-    gen.return(N.data)
-  } else {
-    gen.assign(_`${validateName}.errors`, null)
-    gen.return(true)
-  }
+    throw new Error("STUB");
 }
 
 export function boolOrEmptySchema(it: SchemaCxt, valid: Name): void {

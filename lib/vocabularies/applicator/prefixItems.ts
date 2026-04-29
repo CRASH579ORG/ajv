@@ -6,7 +6,7 @@ const def: CodeKeywordDefinition = {
   type: "array",
   schemaType: ["array"],
   before: "uniqueItems",
-  code: (cxt) => validateTuple(cxt, "items"),
+  code: (cxt) => { throw new Error("STUB"); },
 }
 
 export default def

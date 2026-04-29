@@ -8,7 +8,7 @@ export type EnumError = ErrorObject<"enum", {allowedValues: any[]}, any[] | {$da
 
 const error: KeywordErrorDefinition = {
   message: "must be equal to one of the allowed values",
-  params: ({schemaCode}) => _`{allowedValues: ${schemaCode}}`,
+  params: ({schemaCode}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -31,15 +31,12 @@ const def: CodeKeywordDefinition = {
       /* istanbul ignore if */
       if (!Array.isArray(schema)) throw new Error("ajv implementation error")
       const vSchema = gen.const("vSchema", schemaCode)
-      valid = or(...schema.map((_x: unknown, i: number) => equalCode(vSchema, i)))
+      valid = or(...schema.map((_x: unknown, i: number) => { throw new Error("STUB"); }))
     }
     cxt.pass(valid)
 
     function loopEnum(): void {
-      gen.assign(valid, false)
-      gen.forOf("v", schemaCode as Code, (v) =>
-        gen.if(_`${getEql()}(${data}, ${v})`, () => gen.assign(valid, true).break())
-      )
+        throw new Error("STUB");
     }
 
     function equalCode(vSchema: Name, i: number): Code {

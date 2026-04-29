@@ -7,8 +7,8 @@ import {_, str} from "../../compile/codegen"
 export type PatternError = ErrorObject<"pattern", {pattern: string}, string | {$data: string}>
 
 const error: KeywordErrorDefinition = {
-  message: ({schemaCode}) => str`must match pattern "${schemaCode}"`,
-  params: ({schemaCode}) => _`{pattern: ${schemaCode}}`,
+  message: ({schemaCode}) => { throw new Error("STUB"); },
+  params: ({schemaCode}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -25,8 +25,8 @@ const def: CodeKeywordDefinition = {
       const regExpCode = regExp.code === "new RegExp" ? _`new RegExp` : useFunc(gen, regExp)
       const valid = gen.let("valid")
       gen.try(
-        () => gen.assign(valid, _`${regExpCode}(${schemaCode}, ${u}).test(${data})`),
-        () => gen.assign(valid, false)
+        () => { throw new Error("STUB"); },
+        () => { throw new Error("STUB"); }
       )
       cxt.fail$data(_`!${valid}`)
     } else {

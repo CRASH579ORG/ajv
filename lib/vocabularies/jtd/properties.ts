@@ -28,20 +28,10 @@ export type JTDPropertiesError =
 
 export const error: KeywordErrorDefinition = {
   message: (cxt) => {
-    const {params} = cxt
-    return params.propError
-      ? params.propError === PropError.Additional
-        ? "must NOT have additional properties"
-        : `must have property '${params.missingProperty}'`
-      : typeErrorMessage(cxt, "object")
-  },
+        throw new Error("STUB");
+    },
   params: (cxt) => {
-    const {params} = cxt
-    return params.propError
-      ? params.propError === PropError.Additional
-        ? _`{error: ${params.propError}, additionalProperty: ${params.additionalProperty}}`
-        : _`{error: ${params.propError}, missingProperty: ${params.missingProperty}}`
-      : typeErrorParams(cxt, "object")
+      throw new Error("STUB");
   },
 }
 
@@ -76,11 +66,7 @@ export function validateProperties(cxt: KeywordCxt): void {
       ? checkNullableObject(cxt, data)
       : [gen.let("valid", false), true]
   gen.if(cond, () =>
-    gen.assign(valid, true).block(() => {
-      validateProps(properties, "properties", true)
-      validateProps(optProperties, "optionalProperties")
-      if (!additionalProperties) validateAdditional()
-    })
+    { throw new Error("STUB"); }
   )
   cxt.pass(valid)
 
@@ -97,10 +83,10 @@ export function validateProperties(cxt: KeywordCxt): void {
   function schemaProperties(keyword: string): [string[], string[]] {
     const schema = parentSchema[keyword]
     const allPs = schema ? allSchemaProperties(schema) : []
-    if (it.jtdDiscriminator && allPs.some((p) => p === it.jtdDiscriminator)) {
+    if (it.jtdDiscriminator && allPs.some((p) => { throw new Error("STUB"); })) {
       throw new Error(`JTD: discriminator tag used in ${keyword}`)
     }
-    const ps = allPs.filter((p) => !alwaysValidSchema(it, schema[p]))
+    const ps = allPs.filter((p) => { throw new Error("STUB"); })
     return [allPs, ps]
   }
 
@@ -109,8 +95,8 @@ export function validateProperties(cxt: KeywordCxt): void {
     for (const prop of props) {
       gen.if(
         propertyInData(gen, data, prop, it.opts.ownProperties),
-        () => applyPropertySchema(prop, keyword, _valid),
-        () => missingProperty(prop)
+        () => { throw new Error("STUB"); },
+        () => { throw new Error("STUB"); }
       )
       cxt.ok(_valid)
     }
@@ -138,22 +124,7 @@ export function validateProperties(cxt: KeywordCxt): void {
 
   function validateAdditional(): void {
     gen.forIn("key", data, (key: Name) => {
-      const addProp = isAdditional(key, allProps, "properties", it.jtdDiscriminator)
-      const addOptProp = isAdditional(key, allOptProps, "optionalProperties")
-      const extra =
-        addProp === true ? addOptProp : addOptProp === true ? addProp : and(addProp, addOptProp)
-      gen.if(extra, () => {
-        if (it.opts.removeAdditional) {
-          gen.code(_`delete ${data}[${key}]`)
-        } else {
-          cxt.error(
-            false,
-            {propError: PropError.Additional, additionalProperty: key},
-            {instancePath: key, parentSchema: true}
-          )
-          if (!it.opts.allErrors) gen.break()
-        }
-      })
+        throw new Error("STUB");
     })
   }
 
@@ -173,7 +144,7 @@ export function validateProperties(cxt: KeywordCxt): void {
       }
     } else if (props.length || jtdDiscriminator !== undefined) {
       const ps = jtdDiscriminator === undefined ? props : [jtdDiscriminator].concat(props)
-      additional = and(...ps.map((p) => _`${key} !== ${p}`))
+      additional = and(...ps.map((p) => { throw new Error("STUB"); }))
     } else {
       additional = true
     }

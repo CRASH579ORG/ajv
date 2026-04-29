@@ -8,7 +8,7 @@ import {getValidate} from "../core/ref"
 const def: CodeKeywordDefinition = {
   keyword: "$dynamicAnchor",
   schemaType: "string",
-  code: (cxt) => dynamicAnchor(cxt, cxt.schema),
+  code: (cxt) => { throw new Error("STUB"); },
 }
 
 export function dynamicAnchor(cxt: KeywordCxt, anchor: string): void {
@@ -16,7 +16,7 @@ export function dynamicAnchor(cxt: KeywordCxt, anchor: string): void {
   it.schemaEnv.root.dynamicAnchors[anchor] = true
   const v = _`${N.dynamicAnchors}${getProperty(anchor)}`
   const validate = it.errSchemaPath === "#" ? it.validateName : _getValidate(cxt)
-  gen.if(_`!${v}`, () => gen.assign(v, validate))
+  gen.if(_`!${v}`, () => { throw new Error("STUB"); })
 }
 
 function _getValidate(cxt: KeywordCxt): Code {

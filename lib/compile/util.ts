@@ -57,7 +57,7 @@ export function schemaRefOrVal(
 }
 
 export function unescapeFragment(str: string): string {
-  return unescapeJsonPointer(decodeURIComponent(str))
+    throw new Error("STUB");
 }
 
 export function escapeFragment(str: string | number): string {
@@ -70,15 +70,11 @@ export function escapeJsonPointer(str: string | number): string {
 }
 
 export function unescapeJsonPointer(str: string): string {
-  return str.replace(/~1/g, "/").replace(/~0/g, "~")
+    throw new Error("STUB");
 }
 
 export function eachItem<T>(xs: T | T[], f: (x: T) => void): void {
-  if (Array.isArray(xs)) {
-    for (const x of xs) f(x)
-  } else {
-    f(xs)
-  }
+    throw new Error("STUB");
 }
 
 type SomeEvaluated = EvaluatedProperties | EvaluatedItems
@@ -104,15 +100,7 @@ function makeMergeEvaluated<T extends SomeEvaluated>({
   resultToName,
 }: MakeMergeFuncArgs<T>): MergeEvaluatedFunc<T> {
   return (gen, from, to, toName) => {
-    const res =
-      to === undefined
-        ? from
-        : to instanceof Name
-        ? (from instanceof Name ? mergeNames(gen, from, to) : mergeToName(gen, from, to), to)
-        : from instanceof Name
-        ? (mergeToName(gen, to, from), from)
-        : mergeValues(from, to)
-    return toName === Name && !(res instanceof Name) ? resultToName(gen, res) : res
+      throw new Error("STUB");
   }
 }
 
@@ -124,36 +112,19 @@ interface MergeEvaluated {
 export const mergeEvaluated: MergeEvaluated = {
   props: makeMergeEvaluated({
     mergeNames: (gen, from, to) =>
-      gen.if(_`${to} !== true && ${from} !== undefined`, () => {
-        gen.if(
-          _`${from} === true`,
-          () => gen.assign(to, true),
-          () => gen.assign(to, _`${to} || {}`).code(_`Object.assign(${to}, ${from})`)
-        )
-      }),
+      { throw new Error("STUB"); },
     mergeToName: (gen, from, to) =>
-      gen.if(_`${to} !== true`, () => {
-        if (from === true) {
-          gen.assign(to, true)
-        } else {
-          gen.assign(to, _`${to} || {}`)
-          setEvaluated(gen, to, from)
-        }
-      }),
-    mergeValues: (from, to) => (from === true ? true : {...from, ...to}),
+      { throw new Error("STUB"); },
+    mergeValues: (from, to) => { throw new Error("STUB"); },
     resultToName: evaluatedPropsToName,
   }),
   items: makeMergeEvaluated({
     mergeNames: (gen, from, to) =>
-      gen.if(_`${to} !== true && ${from} !== undefined`, () =>
-        gen.assign(to, _`${from} === true ? true : ${to} > ${from} ? ${to} : ${from}`)
-      ),
+      { throw new Error("STUB"); },
     mergeToName: (gen, from, to) =>
-      gen.if(_`${to} !== true`, () =>
-        gen.assign(to, from === true ? true : _`${to} > ${from} ? ${to} : ${from}`)
-      ),
-    mergeValues: (from, to) => (from === true ? true : Math.max(from, to)),
-    resultToName: (gen, items) => gen.var("items", items),
+      { throw new Error("STUB"); },
+    mergeValues: (from, to) => { throw new Error("STUB"); },
+    resultToName: (gen, items) => { throw new Error("STUB"); },
   }),
 }
 
@@ -165,7 +136,7 @@ export function evaluatedPropsToName(gen: CodeGen, ps?: EvaluatedProperties): Na
 }
 
 export function setEvaluated(gen: CodeGen, props: Name, ps: {[K in string]?: true}): void {
-  Object.keys(ps).forEach((p) => gen.assign(_`${props}${getProperty(p)}`, true))
+  Object.keys(ps).forEach((p) => { throw new Error("STUB"); })
 }
 
 const snippets: {[S in string]?: _Code} = {}

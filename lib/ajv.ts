@@ -10,19 +10,11 @@ const META_SCHEMA_ID = "http://json-schema.org/draft-07/schema"
 
 export class Ajv extends AjvCore {
   _addVocabularies(): void {
-    super._addVocabularies()
-    draft7Vocabularies.forEach((v) => this.addVocabulary(v))
-    if (this.opts.discriminator) this.addKeyword(discriminator)
+      throw new Error("STUB");
   }
 
   _addDefaultMetaSchema(): void {
-    super._addDefaultMetaSchema()
-    if (!this.opts.meta) return
-    const metaSchema = this.opts.$data
-      ? this.$dataMetaSchema(draft7MetaSchema, META_SUPPORT_DATA)
-      : draft7MetaSchema
-    this.addMetaSchema(metaSchema, META_SCHEMA_ID, false)
-    this.refs["http://json-schema.org/schema"] = META_SCHEMA_ID
+      throw new Error("STUB");
   }
 
   defaultMeta(): string | AnySchemaObject | undefined {

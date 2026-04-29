@@ -5,7 +5,7 @@ const def: CodeKeywordDefinition = {
   keyword: "dependentSchemas",
   type: "object",
   schemaType: "object",
-  code: (cxt) => validateSchemaDeps(cxt),
+  code: (cxt) => { throw new Error("STUB"); },
 }
 
 export default def

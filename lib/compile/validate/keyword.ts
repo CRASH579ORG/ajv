@@ -33,7 +33,7 @@ export function macroKeywordCode(cxt: KeywordCxt, def: MacroKeywordDefinition): 
     },
     valid
   )
-  cxt.pass(valid, () => cxt.error(true))
+  cxt.pass(valid, () => { throw new Error("STUB"); })
 }
 
 export function funcKeywordCode(cxt: KeywordCxt, def: FuncKeywordDefinition): void {
@@ -47,27 +47,15 @@ export function funcKeywordCode(cxt: KeywordCxt, def: FuncKeywordDefinition): vo
   cxt.ok(def.valid ?? valid)
 
   function validateKeyword(): void {
-    if (def.errors === false) {
-      assignValid()
-      if (def.modifying) modifyData(cxt)
-      reportErrs(() => cxt.error())
-    } else {
-      const ruleErrs = def.async ? validateAsync() : validateSync()
-      if (def.modifying) modifyData(cxt)
-      reportErrs(() => addErrs(cxt, ruleErrs))
-    }
+      throw new Error("STUB");
   }
 
   function validateAsync(): Name {
     const ruleErrs = gen.let("ruleErrs", null)
     gen.try(
-      () => assignValid(_`await `),
+      () => { throw new Error("STUB"); },
       (e) =>
-        gen.assign(valid, false).if(
-          _`${e} instanceof ${it.ValidationError as Name}`,
-          () => gen.assign(ruleErrs, _`${e}.errors`),
-          () => gen.throw(e)
-        )
+        { throw new Error("STUB"); }
     )
     return ruleErrs
   }
@@ -96,7 +84,7 @@ export function funcKeywordCode(cxt: KeywordCxt, def: FuncKeywordDefinition): vo
 
 function modifyData(cxt: KeywordCxt): void {
   const {gen, data, it} = cxt
-  gen.if(it.parentData, () => gen.assign(data, _`${it.parentData}[${it.parentDataProperty}]`))
+  gen.if(it.parentData, () => { throw new Error("STUB"); })
 }
 
 function addErrs(cxt: KeywordCxt, errs: Code): void {
@@ -104,12 +92,9 @@ function addErrs(cxt: KeywordCxt, errs: Code): void {
   gen.if(
     _`Array.isArray(${errs})`,
     () => {
-      gen
-        .assign(N.vErrors, _`${N.vErrors} === null ? ${errs} : ${N.vErrors}.concat(${errs})`)
-        .assign(N.errors, _`${N.vErrors}.length`)
-      extendErrors(cxt)
+        throw new Error("STUB");
     },
-    () => cxt.error()
+    () => { throw new Error("STUB"); }
   )
 }
 
@@ -130,17 +115,7 @@ export function validSchemaType(
   schemaType: JSONType[],
   allowUndefined = false
 ): boolean {
-  // TODO add tests
-  return (
-    !schemaType.length ||
-    schemaType.some((st) =>
-      st === "array"
-        ? Array.isArray(schema)
-        : st === "object"
-        ? schema && typeof schema == "object" && !Array.isArray(schema)
-        : typeof schema == st || (allowUndefined && typeof schema == "undefined")
-    )
-  )
+    throw new Error("STUB");
 }
 
 export function validateKeywordUsage(
@@ -148,24 +123,5 @@ export function validateKeywordUsage(
   def: AddedKeywordDefinition,
   keyword: string
 ): void {
-  /* istanbul ignore if */
-  if (Array.isArray(def.keyword) ? !def.keyword.includes(keyword) : def.keyword !== keyword) {
-    throw new Error("ajv implementation error")
-  }
-
-  const deps = def.dependencies
-  if (deps?.some((kwd) => !Object.prototype.hasOwnProperty.call(schema, kwd))) {
-    throw new Error(`parent schema must have dependencies of ${keyword}: ${deps.join(",")}`)
-  }
-
-  if (def.validateSchema) {
-    const valid = def.validateSchema(schema[keyword])
-    if (!valid) {
-      const msg =
-        `keyword "${keyword}" value is invalid at path "${errSchemaPath}": ` +
-        self.errorsText(def.validateSchema.errors)
-      if (opts.validateSchema === "log") self.logger.error(msg)
-      else throw new Error(msg)
-    }
-  }
+    throw new Error("STUB");
 }

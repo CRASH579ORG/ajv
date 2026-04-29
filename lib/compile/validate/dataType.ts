@@ -46,8 +46,7 @@ export function coerceAndCheckDataType(it: SchemaObjCxt, types: JSONType[]): boo
   if (checkTypes) {
     const wrongType = checkDataTypes(types, data, opts.strictNumbers, DataType.Wrong)
     gen.if(wrongType, () => {
-      if (coerceTo.length) coerceData(it, types, coerceTo)
-      else reportTypeError(it)
+        throw new Error("STUB");
     })
   }
   return checkTypes
@@ -56,7 +55,7 @@ export function coerceAndCheckDataType(it: SchemaObjCxt, types: JSONType[]): boo
 const COERCIBLE: Set<JSONType> = new Set(["string", "number", "integer", "boolean", "null"])
 function coerceToTypes(types: JSONType[], coerceTypes?: boolean | "array"): JSONType[] {
   return coerceTypes
-    ? types.filter((t) => COERCIBLE.has(t) || (coerceTypes === "array" && t === "array"))
+    ? types.filter((t) => { throw new Error("STUB"); })
     : []
 }
 
@@ -66,10 +65,7 @@ function coerceData(it: SchemaObjCxt, types: JSONType[], coerceTo: JSONType[]): 
   const coerced = gen.let("coerced", _`undefined`)
   if (opts.coerceTypes === "array") {
     gen.if(_`${dataType} == 'object' && Array.isArray(${data}) && ${data}.length == 1`, () =>
-      gen
-        .assign(data, _`${data}[0]`)
-        .assign(dataType, _`typeof ${data}`)
-        .if(checkDataTypes(types, data, opts.strictNumbers), () => gen.assign(coerced, data))
+      { throw new Error("STUB"); }
     )
   }
   gen.if(_`${coerced} !== undefined`)
@@ -83,8 +79,7 @@ function coerceData(it: SchemaObjCxt, types: JSONType[], coerceTo: JSONType[]): 
   gen.endIf()
 
   gen.if(_`${coerced} !== undefined`, () => {
-    gen.assign(data, coerced)
-    assignParentData(it, coerced)
+      throw new Error("STUB");
   })
 
   function coerceSpecificType(t: string): void {
@@ -138,7 +133,7 @@ function coerceData(it: SchemaObjCxt, types: JSONType[], coerceTo: JSONType[]): 
 function assignParentData({gen, parentData, parentDataProperty}: SchemaObjCxt, expr: Name): void {
   // TODO use gen.property
   gen.if(_`${parentData} !== undefined`, () =>
-    gen.assign(_`${parentData}[${parentDataProperty}]`, expr)
+    { throw new Error("STUB"); }
   )
 }
 
@@ -203,9 +198,9 @@ export function checkDataTypes(
 export type TypeError = ErrorObject<"type", {type: string}>
 
 const typeError: KeywordErrorDefinition = {
-  message: ({schema}) => `must be ${schema}`,
+  message: ({schema}) => { throw new Error("STUB"); },
   params: ({schema, schemaValue}) =>
-    typeof schema == "string" ? _`{type: ${schema}}` : _`{type: ${schemaValue}}`,
+    { throw new Error("STUB"); },
 }
 
 export function reportTypeError(it: SchemaObjCxt): void {

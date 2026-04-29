@@ -10,11 +10,9 @@ export type DiscriminatorError = DiscrErrorObj<DiscrError.Tag> | DiscrErrorObj<D
 
 const error: KeywordErrorDefinition = {
   message: ({params: {discrError, tagName}}) =>
-    discrError === DiscrError.Tag
-      ? `tag "${tagName}" must be string`
-      : `value of tag "${tagName}" must be in oneOf`,
+    { throw new Error("STUB"); },
   params: ({params: {discrError, tag, tagName}}) =>
-    _`{error: ${discrError}, tag: ${tagName}, tagValue: ${tag}}`,
+    { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -36,8 +34,8 @@ const def: CodeKeywordDefinition = {
     const tag = gen.const("tag", _`${data}${getProperty(tagName)}`)
     gen.if(
       _`typeof ${tag} == "string"`,
-      () => validateMapping(),
-      () => cxt.error(false, {discrError: DiscrError.Tag, tag, tagName})
+      () => { throw new Error("STUB"); },
+      () => { throw new Error("STUB"); }
     )
     cxt.ok(valid)
 

@@ -17,7 +17,7 @@ const def: CodeKeywordDefinition = {
     const {gen, data, schema, it} = cxt
     const [valid, cond] = checkNullableObject(cxt, data)
     if (alwaysValidSchema(it, schema)) {
-      gen.if(not(or(cond, valid)), () => cxt.error())
+      gen.if(not(or(cond, valid)), () => { throw new Error("STUB"); })
     } else {
       gen.if(cond)
       gen.assign(valid, validateMap())
@@ -31,24 +31,16 @@ const def: CodeKeywordDefinition = {
       const _valid = gen.name("valid")
       if (it.allErrors) {
         const validMap = gen.let("valid", true)
-        validateValues(() => gen.assign(validMap, false))
+        validateValues(() => { throw new Error("STUB"); })
         return validMap
       }
       gen.var(_valid, true)
-      validateValues(() => gen.break())
+      validateValues(() => { throw new Error("STUB"); })
       return _valid
 
       function validateValues(notValid: () => void): void {
         gen.forIn("key", data, (key) => {
-          cxt.subschema(
-            {
-              keyword: "values",
-              dataProp: key,
-              dataPropType: Type.Str,
-            },
-            _valid
-          )
-          gen.if(not(_valid), notValid)
+            throw new Error("STUB");
         })
       }
     }

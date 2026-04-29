@@ -16,7 +16,7 @@ export type UnevaluatedPropertiesError = ErrorObject<
 
 const error: KeywordErrorDefinition = {
   message: "must NOT have unevaluated properties",
-  params: ({params}) => _`{unevaluatedProperty: ${params.unevaluatedProperty}}`,
+  params: ({params}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -32,15 +32,11 @@ const def: CodeKeywordDefinition = {
     const {allErrors, props} = it
     if (props instanceof Name) {
       gen.if(_`${props} !== true`, () =>
-        gen.forIn("key", data, (key: Name) =>
-          gen.if(unevaluatedDynamic(props, key), () => unevaluatedPropCode(key))
-        )
+        { throw new Error("STUB"); }
       )
     } else if (props !== true) {
       gen.forIn("key", data, (key: Name) =>
-        props === undefined
-          ? unevaluatedPropCode(key)
-          : gen.if(unevaluatedStatic(props, key), () => unevaluatedPropCode(key))
+        { throw new Error("STUB"); }
       )
     }
     it.props = true
@@ -64,7 +60,7 @@ const def: CodeKeywordDefinition = {
           },
           valid
         )
-        if (!allErrors) gen.if(not(valid), () => gen.break())
+        if (!allErrors) gen.if(not(valid), () => { throw new Error("STUB"); })
       }
     }
 

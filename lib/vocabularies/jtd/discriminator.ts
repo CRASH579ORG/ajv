@@ -13,18 +13,10 @@ export type JTDDiscriminatorError =
 
 const error: KeywordErrorDefinition = {
   message: (cxt) => {
-    const {schema, params} = cxt
-    return params.discrError
-      ? params.discrError === DiscrError.Tag
-        ? `tag "${schema}" must be string`
-        : `value of tag "${schema}" must be in mapping`
-      : typeErrorMessage(cxt, "object")
-  },
+        throw new Error("STUB");
+    },
   params: (cxt) => {
-    const {schema, params} = cxt
-    return params.discrError
-      ? _`{error: ${params.discrError}, tag: ${schema}, tagValue: ${params.tag}}`
-      : typeErrorParams(cxt, "object")
+      throw new Error("STUB");
   },
 }
 

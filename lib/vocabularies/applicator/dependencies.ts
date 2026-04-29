@@ -29,14 +29,10 @@ export type DependenciesError = ErrorObject<
 
 export const error: KeywordErrorDefinition = {
   message: ({params: {property, depsCount, deps}}) => {
-    const property_ies = depsCount === 1 ? "property" : "properties"
-    return str`must have ${property_ies} ${deps} when property ${property} is present`
-  },
+        throw new Error("STUB");
+    },
   params: ({params: {property, depsCount, deps, missingProperty}}) =>
-    _`{property: ${property},
-    missingProperty: ${missingProperty},
-    depsCount: ${depsCount},
-    deps: ${deps}}`, // TODO change to reference
+    { throw new Error("STUB"); }, // TODO change to reference
 }
 
 const def: CodeKeywordDefinition = {
@@ -80,9 +76,7 @@ export function validatePropertyDeps(
     })
     if (it.allErrors) {
       gen.if(hasProperty, () => {
-        for (const depProp of deps) {
-          checkReportMissingProp(cxt, depProp)
-        }
+          throw new Error("STUB");
       })
     } else {
       gen.if(_`${hasProperty} && (${checkMissingProp(cxt, deps, missing)})`)
@@ -100,10 +94,9 @@ export function validateSchemaDeps(cxt: KeywordCxt, schemaDeps: SchemaMap = cxt.
     gen.if(
       propertyInData(gen, data, prop, it.opts.ownProperties),
       () => {
-        const schCxt = cxt.subschema({keyword, schemaProp: prop}, valid)
-        cxt.mergeValidEvaluated(schCxt, valid)
+          throw new Error("STUB");
       },
-      () => gen.var(valid, true) // TODO var
+      () => { throw new Error("STUB"); } // TODO var
     )
     cxt.ok(valid)
   }

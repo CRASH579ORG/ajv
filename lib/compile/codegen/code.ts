@@ -11,9 +11,7 @@ export const IDENTIFIER = /^[a-z$_][a-z$_0-9]*$/i
 export class Name extends _CodeOrName {
   readonly str: string
   constructor(s: string) {
-    super()
-    if (!IDENTIFIER.test(s)) throw new Error("CodeGen: name must be a valid identifier")
-    this.str = s
+      throw new Error("STUB");
   }
 
   toString(): string {
@@ -25,7 +23,7 @@ export class Name extends _CodeOrName {
   }
 
   get names(): UsedNames {
-    return {[this.str]: 1}
+      throw new Error("STUB");
   }
 }
 
@@ -50,14 +48,11 @@ export class _Code extends _CodeOrName {
   }
 
   get str(): string {
-    return (this._str ??= this._items.reduce((s: string, c: CodeItem) => `${s}${c}`, ""))
+      throw new Error("STUB");
   }
 
   get names(): UsedNames {
-    return (this._names ??= this._items.reduce((names: UsedNames, c) => {
-      if (c instanceof Name) names[c.str] = (names[c.str] || 0) + 1
-      return names
-    }, {}))
+      throw new Error("STUB");
   }
 }
 
@@ -74,27 +69,13 @@ export const nil = new _Code("")
 type CodeArg = SafeExpr | string | undefined
 
 export function _(strs: TemplateStringsArray, ...args: CodeArg[]): _Code {
-  const code: CodeItem[] = [strs[0]]
-  let i = 0
-  while (i < args.length) {
-    addCodeArg(code, args[i])
-    code.push(strs[++i])
-  }
-  return new _Code(code)
+    throw new Error("STUB");
 }
 
 const plus = new _Code("+")
 
 export function str(strs: TemplateStringsArray, ...args: (CodeArg | string[])[]): _Code {
-  const expr: CodeItem[] = [safeStringify(strs[0])]
-  let i = 0
-  while (i < args.length) {
-    expr.push(plus)
-    addCodeArg(expr, args[i])
-    expr.push(plus, safeStringify(strs[++i]))
-  }
-  optimize(expr)
-  return new _Code(expr)
+    throw new Error("STUB");
 }
 
 export function addCodeArg(code: CodeItem[], arg: CodeArg | string[]): void {
@@ -104,31 +85,11 @@ export function addCodeArg(code: CodeItem[], arg: CodeArg | string[]): void {
 }
 
 function optimize(expr: CodeItem[]): void {
-  let i = 1
-  while (i < expr.length - 1) {
-    if (expr[i] === plus) {
-      const res = mergeExprItems(expr[i - 1], expr[i + 1])
-      if (res !== undefined) {
-        expr.splice(i - 1, 3, res)
-        continue
-      }
-      expr[i++] = "+"
-    }
-    i++
-  }
+    throw new Error("STUB");
 }
 
 function mergeExprItems(a: CodeItem, b: CodeItem): CodeItem | undefined {
-  if (b === '""') return a
-  if (a === '""') return b
-  if (typeof a == "string") {
-    if (b instanceof Name || a[a.length - 1] !== '"') return
-    if (typeof b != "string") return `${a.slice(0, -1)}${b}"`
-    if (b[0] === '"') return a.slice(0, -1) + b.slice(1)
-    return
-  }
-  if (typeof b == "string" && b[0] === '"' && !(a instanceof Name)) return `"${a}${b.slice(1)}`
-  return
+    throw new Error("STUB");
 }
 
 export function strConcat(c1: Code, c2: Code): Code {

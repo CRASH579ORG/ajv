@@ -25,12 +25,10 @@ export default class AjvPack {
   }
 
   addSchema(...args: Parameters<typeof Ajv.prototype.addSchema>): AjvPack {
-    this.ajv.addSchema.call(this.ajv, ...args)
-    return this
+      throw new Error("STUB");
   }
 
   addKeyword(...args: Parameters<typeof Ajv.prototype.addKeyword>): AjvPack {
-    this.ajv.addKeyword.call(this.ajv, ...args)
-    return this
+      throw new Error("STUB");
   }
 }

@@ -17,7 +17,7 @@ export type OneOfError = ErrorObject<
 
 const error: KeywordErrorDefinition = {
   message: "must match exactly one schema in oneOf",
-  params: ({params}) => _`{passingSchemas: ${params.passing}}`,
+  params: ({params}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -41,40 +41,12 @@ const def: CodeKeywordDefinition = {
 
     cxt.result(
       valid,
-      () => cxt.reset(),
-      () => cxt.error(true)
+      () => { throw new Error("STUB"); },
+      () => { throw new Error("STUB"); }
     )
 
     function validateOneOf(): void {
-      schArr.forEach((sch: AnySchema, i: number) => {
-        let schCxt: SchemaCxt | undefined
-        if (alwaysValidSchema(it, sch)) {
-          gen.var(schValid, true)
-        } else {
-          schCxt = cxt.subschema(
-            {
-              keyword: "oneOf",
-              schemaProp: i,
-              compositeRule: true,
-            },
-            schValid
-          )
-        }
-
-        if (i > 0) {
-          gen
-            .if(_`${schValid} && ${valid}`)
-            .assign(valid, false)
-            .assign(passing, _`[${passing}, ${i}]`)
-            .else()
-        }
-
-        gen.if(schValid, () => {
-          gen.assign(valid, true)
-          gen.assign(passing, i)
-          if (schCxt) cxt.mergeEvaluated(schCxt, Name)
-        })
-      })
+        throw new Error("STUB");
     }
   },
 }

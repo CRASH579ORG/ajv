@@ -12,8 +12,8 @@ import {alwaysValidSchema, checkStrictMode} from "../../compile/util"
 export type IfKeywordError = ErrorObject<"if", {failingKeyword: string}, AnySchema>
 
 const error: KeywordErrorDefinition = {
-  message: ({params}) => str`must match "${params.ifClause}" schema`,
-  params: ({params}) => _`{failingKeyword: ${params.ifClause}}`,
+  message: ({params}) => { throw new Error("STUB"); },
+  params: ({params}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -45,7 +45,7 @@ const def: CodeKeywordDefinition = {
       gen.if(not(schValid), validateClause("else"))
     }
 
-    cxt.pass(valid, () => cxt.error(true))
+    cxt.pass(valid, () => { throw new Error("STUB"); })
 
     function validateIf(): void {
       const schCxt = cxt.subschema(
@@ -62,11 +62,7 @@ const def: CodeKeywordDefinition = {
 
     function validateClause(keyword: string, ifClause?: Name): () => void {
       return () => {
-        const schCxt = cxt.subschema({keyword}, schValid)
-        gen.assign(valid, schValid)
-        cxt.mergeValidEvaluated(schCxt, valid)
-        if (ifClause) gen.assign(ifClause, _`${keyword}`)
-        else cxt.setParams({ifClause: keyword})
+          throw new Error("STUB");
       }
     }
   },

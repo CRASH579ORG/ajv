@@ -44,14 +44,11 @@ export class Ajv extends AjvCore {
   }
 
   _addVocabularies(): void {
-    super._addVocabularies()
-    this.addVocabulary(jtdVocabulary)
+      throw new Error("STUB");
   }
 
   _addDefaultMetaSchema(): void {
-    super._addDefaultMetaSchema()
-    if (!this.opts.meta) return
-    this.addMetaSchema(jtdMetaSchema, META_SCHEMA_ID, false)
+      throw new Error("STUB");
   }
 
   defaultMeta(): string | AnySchemaObject | undefined {
@@ -64,8 +61,7 @@ export class Ajv extends AjvCore {
   // eslint-disable-next-line @typescript-eslint/unified-signatures
   compileSerializer<T = unknown>(schema: JTDSchemaType<T>): (data: T) => string
   compileSerializer<T = unknown>(schema: SchemaObject): (data: T) => string {
-    const sch = this._addSchema(schema)
-    return sch.serialize || this._compileSerializer(sch)
+      throw new Error("STUB");
   }
 
   compileParser<T = unknown>(schema: SchemaObject): JTDParser<T>
@@ -73,22 +69,15 @@ export class Ajv extends AjvCore {
   // eslint-disable-next-line @typescript-eslint/unified-signatures
   compileParser<T = unknown>(schema: JTDSchemaType<T>): JTDParser<T>
   compileParser<T = unknown>(schema: SchemaObject): JTDParser<T> {
-    const sch = this._addSchema(schema)
-    return (sch.parse || this._compileParser(sch)) as JTDParser<T>
+      throw new Error("STUB");
   }
 
   private _compileSerializer<T>(sch: SchemaEnv): (data: T) => string {
-    compileSerializer.call(this, sch, (sch.schema as AnySchemaObject).definitions || {})
-    /* istanbul ignore if */
-    if (!sch.serialize) throw new Error("ajv implementation error")
-    return sch.serialize
+      throw new Error("STUB");
   }
 
   private _compileParser(sch: SchemaEnv): JTDParser {
-    compileParser.call(this, sch, (sch.schema as AnySchemaObject).definitions || {})
-    /* istanbul ignore if */
-    if (!sch.parse) throw new Error("ajv implementation error")
-    return sch.parse
+      throw new Error("STUB");
   }
 }
 

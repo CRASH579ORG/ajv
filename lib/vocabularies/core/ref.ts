@@ -72,14 +72,10 @@ export function callRef(cxt: KeywordCxt, v: Code, sch?: SchemaEnv, $async?: bool
     const valid = gen.let("valid")
     gen.try(
       () => {
-        gen.code(_`await ${callValidateCode(cxt, v, passCxt)}`)
-        addEvaluatedFrom(v) // TODO will not work with async, it has to be returned with the result
-        if (!allErrors) gen.assign(valid, true)
-      },
+            throw new Error("STUB");
+        },
       (e) => {
-        gen.if(_`!(${e} instanceof ${it.ValidationError as Name})`, () => gen.throw(e))
-        addErrorsFrom(e)
-        if (!allErrors) gen.assign(valid, false)
+          throw new Error("STUB");
       }
     )
     cxt.ok(valid)
@@ -88,8 +84,8 @@ export function callRef(cxt: KeywordCxt, v: Code, sch?: SchemaEnv, $async?: bool
   function callSyncRef(): void {
     cxt.result(
       callValidateCode(cxt, v, passCxt),
-      () => addEvaluatedFrom(v),
-      () => addErrorsFrom(v)
+      () => { throw new Error("STUB"); },
+      () => { throw new Error("STUB"); }
     )
   }
 

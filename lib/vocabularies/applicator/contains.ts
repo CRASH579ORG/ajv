@@ -16,11 +16,9 @@ export type ContainsError = ErrorObject<
 
 const error: KeywordErrorDefinition = {
   message: ({params: {min, max}}) =>
-    max === undefined
-      ? str`must contain at least ${min} valid item(s)`
-      : str`must contain at least ${min} and no more than ${max} valid item(s)`,
+    { throw new Error("STUB"); },
   params: ({params: {min, max}}) =>
-    max === undefined ? _`{minContains: ${min}}` : _`{minContains: ${min}, maxContains: ${max}}`,
+    { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -62,7 +60,7 @@ const def: CodeKeywordDefinition = {
     it.items = true
     const valid = gen.name("valid")
     if (max === undefined && min === 1) {
-      validateItems(valid, () => gen.if(valid, () => gen.break()))
+      validateItems(valid, () => { throw new Error("STUB"); })
     } else if (min === 0) {
       gen.let(valid, true)
       if (max !== undefined) gen.if(_`${data}.length > 0`, validateItemsWithCount)
@@ -70,37 +68,28 @@ const def: CodeKeywordDefinition = {
       gen.let(valid, false)
       validateItemsWithCount()
     }
-    cxt.result(valid, () => cxt.reset())
+    cxt.result(valid, () => { throw new Error("STUB"); })
 
     function validateItemsWithCount(): void {
       const schValid = gen.name("_valid")
       const count = gen.let("count", 0)
-      validateItems(schValid, () => gen.if(schValid, () => checkLimits(count)))
+      validateItems(schValid, () => { throw new Error("STUB"); })
     }
 
     function validateItems(_valid: Name, block: () => void): void {
       gen.forRange("i", 0, len, (i) => {
-        cxt.subschema(
-          {
-            keyword: "contains",
-            dataProp: i,
-            dataPropType: Type.Num,
-            compositeRule: true,
-          },
-          _valid
-        )
-        block()
+          throw new Error("STUB");
       })
     }
 
     function checkLimits(count: Name): void {
       gen.code(_`${count}++`)
       if (max === undefined) {
-        gen.if(_`${count} >= ${min}`, () => gen.assign(valid, true).break())
+        gen.if(_`${count} >= ${min}`, () => { throw new Error("STUB"); })
       } else {
-        gen.if(_`${count} > ${max}`, () => gen.assign(valid, false).break())
+        gen.if(_`${count} > ${max}`, () => { throw new Error("STUB"); })
         if (min === 1) gen.assign(valid, true)
-        else gen.if(_`${count} >= ${min}`, () => gen.assign(valid, true))
+        else gen.if(_`${count} >= ${min}`, () => { throw new Error("STUB"); })
       }
     }
   },

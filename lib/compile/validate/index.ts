@@ -36,84 +36,34 @@ import {
 
 // schema compilation - generates validation function, subschemaCode (below) is used for subschemas
 export function validateFunctionCode(it: SchemaCxt): void {
-  if (isSchemaObj(it)) {
-    checkKeywords(it)
-    if (schemaCxtHasRules(it)) {
-      topSchemaObjCode(it)
-      return
-    }
-  }
-  validateFunction(it, () => topBoolOrEmptySchema(it))
+    throw new Error("STUB");
 }
 
 function validateFunction(
   {gen, validateName, schema, schemaEnv, opts}: SchemaCxt,
   body: Block
 ): void {
-  if (opts.code.es5) {
-    gen.func(validateName, _`${N.data}, ${N.valCxt}`, schemaEnv.$async, () => {
-      gen.code(_`"use strict"; ${funcSourceUrl(schema, opts)}`)
-      destructureValCxtES5(gen, opts)
-      gen.code(body)
-    })
-  } else {
-    gen.func(validateName, _`${N.data}, ${destructureValCxt(opts)}`, schemaEnv.$async, () =>
-      gen.code(funcSourceUrl(schema, opts)).code(body)
-    )
-  }
+    throw new Error("STUB");
 }
 
 function destructureValCxt(opts: InstanceOptions): Code {
-  return _`{${N.instancePath}="", ${N.parentData}, ${N.parentDataProperty}, ${N.rootData}=${
-    N.data
-  }${opts.dynamicRef ? _`, ${N.dynamicAnchors}={}` : nil}}={}`
+    throw new Error("STUB");
 }
 
 function destructureValCxtES5(gen: CodeGen, opts: InstanceOptions): void {
-  gen.if(
-    N.valCxt,
-    () => {
-      gen.var(N.instancePath, _`${N.valCxt}.${N.instancePath}`)
-      gen.var(N.parentData, _`${N.valCxt}.${N.parentData}`)
-      gen.var(N.parentDataProperty, _`${N.valCxt}.${N.parentDataProperty}`)
-      gen.var(N.rootData, _`${N.valCxt}.${N.rootData}`)
-      if (opts.dynamicRef) gen.var(N.dynamicAnchors, _`${N.valCxt}.${N.dynamicAnchors}`)
-    },
-    () => {
-      gen.var(N.instancePath, _`""`)
-      gen.var(N.parentData, _`undefined`)
-      gen.var(N.parentDataProperty, _`undefined`)
-      gen.var(N.rootData, N.data)
-      if (opts.dynamicRef) gen.var(N.dynamicAnchors, _`{}`)
-    }
-  )
+    throw new Error("STUB");
 }
 
 function topSchemaObjCode(it: SchemaObjCxt): void {
-  const {schema, opts, gen} = it
-  validateFunction(it, () => {
-    if (opts.$comment && schema.$comment) commentKeyword(it)
-    checkNoDefault(it)
-    gen.let(N.vErrors, null)
-    gen.let(N.errors, 0)
-    if (opts.unevaluated) resetEvaluated(it)
-    typeAndKeywords(it)
-    returnResults(it)
-  })
-  return
+    throw new Error("STUB");
 }
 
 function resetEvaluated(it: SchemaObjCxt): void {
-  // TODO maybe some hook to execute it in the end to check whether props/items are Name, as in assignEvaluated
-  const {gen, validateName} = it
-  it.evaluated = gen.const("evaluated", _`${validateName}.evaluated`)
-  gen.if(_`${it.evaluated}.dynamicProps`, () => gen.assign(_`${it.evaluated}.props`, _`undefined`))
-  gen.if(_`${it.evaluated}.dynamicItems`, () => gen.assign(_`${it.evaluated}.items`, _`undefined`))
+    throw new Error("STUB");
 }
 
 function funcSourceUrl(schema: AnySchema, opts: InstanceOptions): Code {
-  const schId = typeof schema == "object" && schema[opts.schemaId]
-  return schId && (opts.code.source || opts.code.process) ? _`/*# sourceURL=${schId} */` : nil
+    throw new Error("STUB");
 }
 
 // schema compilation - this function is used recursively to generate code for sub-schemas
@@ -169,10 +119,7 @@ function checkRefsAndKeywords(it: SchemaObjCxt): void {
 }
 
 function checkNoDefault(it: SchemaObjCxt): void {
-  const {schema, opts} = it
-  if (schema.default !== undefined && opts.useDefaults && opts.strictSchema) {
-    checkStrictMode(it, "default is ignored in the schema root")
-  }
+    throw new Error("STUB");
 }
 
 function updateContext(it: SchemaObjCxt): void {
@@ -196,24 +143,11 @@ function commentKeyword({gen, schemaEnv, schema, errSchemaPath, opts}: SchemaObj
 }
 
 function returnResults(it: SchemaCxt): void {
-  const {gen, schemaEnv, validateName, ValidationError, opts} = it
-  if (schemaEnv.$async) {
-    // TODO assign unevaluated
-    gen.if(
-      _`${N.errors} === 0`,
-      () => gen.return(N.data),
-      () => gen.throw(_`new ${ValidationError as Name}(${N.vErrors})`)
-    )
-  } else {
-    gen.assign(_`${validateName}.errors`, N.vErrors)
-    if (opts.unevaluated) assignEvaluated(it)
-    gen.return(_`${N.errors} === 0`)
-  }
+    throw new Error("STUB");
 }
 
 function assignEvaluated({gen, evaluated, props, items}: SchemaCxt): void {
-  if (props instanceof Name) gen.assign(_`${evaluated}.props`, props)
-  if (items instanceof Name) gen.assign(_`${evaluated}.items`, items)
+    throw new Error("STUB");
 }
 
 function schemaKeywords(
@@ -225,13 +159,12 @@ function schemaKeywords(
   const {gen, schema, data, allErrors, opts, self} = it
   const {RULES} = self
   if (schema.$ref && (opts.ignoreKeywordsWithRef || !schemaHasRulesButRef(schema, RULES))) {
-    gen.block(() => keywordCode(it, "$ref", (RULES.all.$ref as Rule).definition)) // TODO typecast
+    gen.block(() => { throw new Error("STUB"); }) // TODO typecast
     return
   }
   if (!opts.jtd) checkStrictTypes(it, types)
   gen.block(() => {
-    for (const group of RULES.rules) groupKeywords(group)
-    groupKeywords(RULES.post)
+      throw new Error("STUB");
   })
 
   function groupKeywords(group: RuleGroup): void {
@@ -260,11 +193,7 @@ function iterateKeywords(it: SchemaObjCxt, group: RuleGroup): void {
   } = it
   if (useDefaults) assignDefaults(it, group.type)
   gen.block(() => {
-    for (const rule of group.rules) {
-      if (shouldUseRule(schema, rule)) {
-        keywordCode(it, rule.keyword, rule.definition, group.type)
-      }
-    }
+      throw new Error("STUB");
   })
 }
 
@@ -282,9 +211,7 @@ function checkContextTypes(it: SchemaObjCxt, types: JSONType[]): void {
     return
   }
   types.forEach((t) => {
-    if (!includesType(it.dataTypes, t)) {
-      strictTypesError(it, `type "${t}" not allowed by context "${it.dataTypes.join(",")}"`)
-    }
+      throw new Error("STUB");
   })
   narrowSchemaTypes(it, types)
 }
@@ -301,7 +228,7 @@ function checkKeywordTypes(it: SchemaObjCxt, ts: JSONType[]): void {
     const rule = rules[keyword]
     if (typeof rule == "object" && shouldUseRule(it.schema, rule)) {
       const {type} = rule.definition
-      if (type.length && !type.some((t) => hasApplicableType(ts, t))) {
+      if (type.length && !type.some((t) => { throw new Error("STUB"); })) {
         strictTypesError(it, `missing type "${type.join(",")}" for keyword "${keyword}"`)
       }
     }
@@ -349,32 +276,7 @@ export class KeywordCxt implements KeywordErrorCxt {
   readonly def: AddedKeywordDefinition
 
   constructor(it: SchemaObjCxt, def: AddedKeywordDefinition, keyword: string) {
-    validateKeywordUsage(it, def, keyword)
-    this.gen = it.gen
-    this.allErrors = it.allErrors
-    this.keyword = keyword
-    this.data = it.data
-    this.schema = it.schema[keyword]
-    this.$data = def.$data && it.opts.$data && this.schema && this.schema.$data
-    this.schemaValue = schemaRefOrVal(it, this.schema, keyword, this.$data)
-    this.schemaType = def.schemaType
-    this.parentSchema = it.schema
-    this.params = {}
-    this.it = it
-    this.def = def
-
-    if (this.$data) {
-      this.schemaCode = it.gen.const("vSchema", getData(this.$data, it))
-    } else {
-      this.schemaCode = this.schemaValue
-      if (!validSchemaType(this.schema, def.schemaType, def.allowUndefined)) {
-        throw new Error(`${keyword} value must be ${JSON.stringify(def.schemaType)}`)
-      }
-    }
-
-    if ("code" in def ? def.trackErrors : def.errors !== false) {
-      this.errsCount = it.gen.const("_errs", N.errors)
-    }
+      throw new Error("STUB");
   }
 
   result(condition: Code, successAction?: () => void, failAction?: () => void): void {
@@ -451,8 +353,7 @@ export class KeywordCxt implements KeywordErrorCxt {
 
   block$data(valid: Name, codeBlock: () => void, $dataValid: Code = nil): void {
     this.gen.block(() => {
-      this.check$data(valid, $dataValid)
-      codeBlock()
+        throw new Error("STUB");
     })
   }
 
@@ -515,7 +416,7 @@ export class KeywordCxt implements KeywordErrorCxt {
   mergeValidEvaluated(schemaCxt: SchemaCxt, valid: Name): boolean | void {
     const {it, gen} = this
     if (it.opts.unevaluated && (it.props !== true || it.items !== true)) {
-      gen.if(valid, () => this.mergeEvaluated(schemaCxt, Name))
+      gen.if(valid, () => { throw new Error("STUB"); })
       return true
     }
   }
@@ -545,38 +446,5 @@ export function getData(
   $data: string,
   {dataLevel, dataNames, dataPathArr}: SchemaCxt
 ): Code | number {
-  let jsonPointer
-  let data: Code
-  if ($data === "") return N.rootData
-  if ($data[0] === "/") {
-    if (!JSON_POINTER.test($data)) throw new Error(`Invalid JSON-pointer: ${$data}`)
-    jsonPointer = $data
-    data = N.rootData
-  } else {
-    const matches = RELATIVE_JSON_POINTER.exec($data)
-    if (!matches) throw new Error(`Invalid JSON-pointer: ${$data}`)
-    const up: number = +matches[1]
-    jsonPointer = matches[2]
-    if (jsonPointer === "#") {
-      if (up >= dataLevel) throw new Error(errorMsg("property/index", up))
-      return dataPathArr[dataLevel - up]
-    }
-    if (up > dataLevel) throw new Error(errorMsg("data", up))
-    data = dataNames[dataLevel - up]
-    if (!jsonPointer) return data
-  }
-
-  let expr = data
-  const segments = jsonPointer.split("/")
-  for (const segment of segments) {
-    if (segment) {
-      data = _`${data}${getProperty(unescapeJsonPointer(segment))}`
-      expr = _`${expr} && ${data}`
-    }
-  }
-  return expr
-
-  function errorMsg(pointerType: string, up: number): string {
-    return `Cannot access ${pointerType} ${up} levels up, current level is ${dataLevel}`
-  }
+    throw new Error("STUB");
 }

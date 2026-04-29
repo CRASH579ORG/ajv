@@ -156,16 +156,11 @@ export class ValueScope extends Scope {
   }
 
   getValue(prefix: string, keyOrRef: unknown): ValueScopeName | undefined {
-    const vs = this._values[prefix]
-    if (!vs) return
-    return vs.get(keyOrRef)
+      throw new Error("STUB");
   }
 
   scopeRefs(scopeName: Name, values: ScopeValues | ScopeValueSets = this._values): Code {
-    return this._reduceValues(values, (name: ValueScopeName) => {
-      if (name.scopePath === undefined) throw new Error(`CodeGen: name "${name}" has no value`)
-      return _`${scopeName}${name.scopePath}`
-    })
+      throw new Error("STUB");
   }
 
   scopeCode(
@@ -176,8 +171,7 @@ export class ValueScope extends Scope {
     return this._reduceValues(
       values,
       (name: ValueScopeName) => {
-        if (name.value === undefined) throw new Error(`CodeGen: name "${name}" has no value`)
-        return name.value.code
+          throw new Error("STUB");
       },
       usedValues,
       getCode
@@ -196,18 +190,7 @@ export class ValueScope extends Scope {
       if (!vs) continue
       const nameSet = (usedValues[prefix] = usedValues[prefix] || new Map())
       vs.forEach((name: ValueScopeName) => {
-        if (nameSet.has(name)) return
-        nameSet.set(name, UsedValueState.Started)
-        let c = valueCode(name)
-        if (c) {
-          const def = this.opts.es5 ? varKinds.var : varKinds.const
-          code = _`${code}${def} ${name} = ${c};${this.opts._n}`
-        } else if ((c = getCode?.(name))) {
-          code = _`${code}${c}${this.opts._n}`
-        } else {
-          throw new ValueError(name)
-        }
-        nameSet.set(name, UsedValueState.Completed)
+          throw new Error("STUB");
       })
     }
     return code

@@ -20,7 +20,7 @@ const def: CodeKeywordDefinition = {
     if (it.opts.unevaluated && allProps.length && it.props !== true) {
       it.props = mergeEvaluated.props(gen, toHash(allProps), it.props)
     }
-    const properties = allProps.filter((p) => !alwaysValidSchema(it, schema[p]))
+    const properties = allProps.filter((p) => { throw new Error("STUB"); })
     if (properties.length === 0) return
     const valid = gen.name("valid")
 

@@ -22,8 +22,8 @@ export const intRange: {[T in IntType]: [number, number, number]} = {
 export type JTDType = "boolean" | "string" | "timestamp" | "float32" | "float64" | IntType
 
 const error: KeywordErrorDefinition = {
-  message: (cxt) => typeErrorMessage(cxt, cxt.schema),
-  params: (cxt) => typeErrorParams(cxt, cxt.schema),
+  message: (cxt) => { throw new Error("STUB"); },
+  params: (cxt) => { throw new Error("STUB"); },
 }
 
 function timestampCode(cxt: KeywordCxt): Code {

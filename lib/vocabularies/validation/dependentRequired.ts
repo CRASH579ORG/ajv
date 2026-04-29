@@ -17,7 +17,7 @@ const def: CodeKeywordDefinition = {
   type: "object",
   schemaType: "object",
   error,
-  code: (cxt) => validatePropertyDeps(cxt),
+  code: (cxt) => { throw new Error("STUB"); },
 }
 
 export default def

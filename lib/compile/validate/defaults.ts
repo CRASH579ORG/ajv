@@ -9,7 +9,7 @@ export function assignDefaults(it: SchemaObjCxt, ty?: string): void {
       assignDefault(it, key, properties[key].default)
     }
   } else if (ty === "array" && Array.isArray(items)) {
-    items.forEach((sch, i: number) => assignDefault(it, i, sch.default))
+    items.forEach((sch, i: number) => { throw new Error("STUB"); })
   }
 }
 

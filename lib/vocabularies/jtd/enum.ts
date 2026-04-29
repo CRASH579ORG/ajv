@@ -8,7 +8,7 @@ export type JTDEnumError = ErrorObject<"enum", {allowedValues: string[]}, string
 
 const error: KeywordErrorDefinition = {
   message: "must be equal to one of the allowed values",
-  params: ({schemaCode}) => _`{allowedValues: ${schemaCode}}`,
+  params: ({schemaCode}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -29,15 +29,13 @@ const def: CodeKeywordDefinition = {
     } else {
       /* istanbul ignore if */
       if (!Array.isArray(schema)) throw new Error("ajv implementation error")
-      valid = and(isString, or(...schema.map((value: string) => _`${data} === ${value}`)))
+      valid = and(isString, or(...schema.map((value: string) => { throw new Error("STUB"); })))
       if (parentSchema.nullable) valid = or(_`${data} === null`, valid)
     }
     cxt.pass(valid)
 
     function loopEnum(): void {
-      gen.forOf("v", schemaValue as Code, (v) =>
-        gen.if(_`${valid} = ${data} === ${v}`, () => gen.break())
-      )
+        throw new Error("STUB");
     }
   },
 }

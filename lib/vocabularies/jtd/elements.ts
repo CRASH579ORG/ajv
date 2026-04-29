@@ -19,11 +19,7 @@ const def: CodeKeywordDefinition = {
     if (alwaysValidSchema(it, schema)) return
     const [valid] = checkNullable(cxt)
     gen.if(not(valid), () =>
-      gen.if(
-        _`Array.isArray(${data})`,
-        () => gen.assign(valid, validateArray(cxt)),
-        () => cxt.error()
-      )
+      { throw new Error("STUB"); }
     )
     cxt.ok(valid)
   },

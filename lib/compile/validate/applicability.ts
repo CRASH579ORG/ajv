@@ -11,12 +11,12 @@ export function schemaHasRulesForType(
 }
 
 export function shouldUseGroup(schema: AnySchemaObject, group: RuleGroup): boolean {
-  return group.rules.some((rule) => shouldUseRule(schema, rule))
+  return group.rules.some((rule) => { throw new Error("STUB"); })
 }
 
 export function shouldUseRule(schema: AnySchemaObject, rule: Rule): boolean | undefined {
   return (
     schema[rule.keyword] !== undefined ||
-    rule.definition.implements?.some((kwd) => schema[kwd] !== undefined)
+    rule.definition.implements?.some((kwd) => { throw new Error("STUB"); })
   )
 }

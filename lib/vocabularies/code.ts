@@ -8,8 +8,7 @@ import {useFunc} from "../compile/util"
 export function checkReportMissingProp(cxt: KeywordCxt, prop: string): void {
   const {gen, data, it} = cxt
   gen.if(noPropertyInData(gen, data, prop, it.opts.ownProperties), () => {
-    cxt.setParams({missingProperty: _`${prop}`}, true)
-    cxt.error()
+      throw new Error("STUB");
   })
 }
 
@@ -20,7 +19,7 @@ export function checkMissingProp(
 ): Code {
   return or(
     ...properties.map((prop) =>
-      and(noPropertyInData(gen, data, prop, opts.ownProperties), _`${missing} = ${prop}`)
+      { throw new Error("STUB"); }
     )
   )
 }
@@ -63,12 +62,12 @@ export function noPropertyInData(
 }
 
 export function allSchemaProperties(schemaMap?: SchemaMap): string[] {
-  return schemaMap ? Object.keys(schemaMap).filter((p) => p !== "__proto__") : []
+  return schemaMap ? Object.keys(schemaMap).filter((p) => { throw new Error("STUB"); }) : []
 }
 
 export function schemaProperties(it: SchemaCxt, schemaMap: SchemaMap): string[] {
   return allSchemaProperties(schemaMap).filter(
-    (p) => !alwaysValidSchema(it, schemaMap[p] as AnySchema)
+    (p) => { throw new Error("STUB"); }
   )
 }
 
@@ -109,60 +108,21 @@ export function validateArray(cxt: KeywordCxt): Name {
   const valid = gen.name("valid")
   if (it.allErrors) {
     const validArr = gen.let("valid", true)
-    validateItems(() => gen.assign(validArr, false))
+    validateItems(() => { throw new Error("STUB"); })
     return validArr
   }
   gen.var(valid, true)
-  validateItems(() => gen.break())
+  validateItems(() => { throw new Error("STUB"); })
   return valid
 
   function validateItems(notValid: () => void): void {
     const len = gen.const("len", _`${data}.length`)
     gen.forRange("i", 0, len, (i) => {
-      cxt.subschema(
-        {
-          keyword,
-          dataProp: i,
-          dataPropType: Type.Num,
-        },
-        valid
-      )
-      gen.if(not(valid), notValid)
+        throw new Error("STUB");
     })
   }
 }
 
 export function validateUnion(cxt: KeywordCxt): void {
-  const {gen, schema, keyword, it} = cxt
-  /* istanbul ignore if */
-  if (!Array.isArray(schema)) throw new Error("ajv implementation error")
-  const alwaysValid = schema.some((sch: AnySchema) => alwaysValidSchema(it, sch))
-  if (alwaysValid && !it.opts.unevaluated) return
-
-  const valid = gen.let("valid", false)
-  const schValid = gen.name("_valid")
-
-  gen.block(() =>
-    schema.forEach((_sch: AnySchema, i: number) => {
-      const schCxt = cxt.subschema(
-        {
-          keyword,
-          schemaProp: i,
-          compositeRule: true,
-        },
-        schValid
-      )
-      gen.assign(valid, _`${valid} || ${schValid}`)
-      const merged = cxt.mergeValidEvaluated(schCxt, schValid)
-      // can short-circuit if `unevaluatedProperties/Items` not supported (opts.unevaluated !== true)
-      // or if all properties and items were evaluated (it.props === true && it.items === true)
-      if (!merged) gen.if(not(valid))
-    })
-  )
-
-  cxt.result(
-    valid,
-    () => cxt.reset(),
-    () => cxt.error(true)
-  )
+    throw new Error("STUB");
 }

@@ -12,7 +12,7 @@ export type PropertyNamesError = ErrorObject<"propertyNames", {propertyName: str
 
 const error: KeywordErrorDefinition = {
   message: "property name must be valid",
-  params: ({params}) => _`{propertyName: ${params.propertyName}}`,
+  params: ({params}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -26,21 +26,7 @@ const def: CodeKeywordDefinition = {
     const valid = gen.name("valid")
 
     gen.forIn("key", data, (key) => {
-      cxt.setParams({propertyName: key})
-      cxt.subschema(
-        {
-          keyword: "propertyNames",
-          data: key,
-          dataTypes: ["string"],
-          propertyName: key,
-          compositeRule: true,
-        },
-        valid
-      )
-      gen.if(not(valid), () => {
-        cxt.error(true)
-        if (!it.allErrors) gen.break()
-      })
+        throw new Error("STUB");
     })
 
     cxt.ok(valid)

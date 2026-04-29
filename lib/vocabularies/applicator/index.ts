@@ -17,26 +17,7 @@ import ifKeyword, {IfKeywordError} from "./if"
 import thenElse from "./thenElse"
 
 export default function getApplicator(draft2020 = false): Vocabulary {
-  const applicator = [
-    // any
-    notKeyword,
-    anyOf,
-    oneOf,
-    allOf,
-    ifKeyword,
-    thenElse,
-    // object
-    propertyNames,
-    additionalProperties,
-    dependencies,
-    properties,
-    patternProperties,
-  ]
-  // array
-  if (draft2020) applicator.push(prefixItems, items2020)
-  else applicator.push(additionalItems, items)
-  applicator.push(contains)
-  return applicator
+    throw new Error("STUB");
 }
 
 export type ApplicatorKeywordError =

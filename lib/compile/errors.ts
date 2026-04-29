@@ -6,14 +6,12 @@ import {getErrorPath, Type} from "./util"
 import N from "./names"
 
 export const keywordError: KeywordErrorDefinition = {
-  message: ({keyword}) => str`must pass "${keyword}" keyword validation`,
+  message: ({keyword}) => { throw new Error("STUB"); },
 }
 
 export const keyword$DataError: KeywordErrorDefinition = {
   message: ({keyword, schemaType}) =>
-    schemaType
-      ? str`"${keyword}" keyword must be ${schemaType} ($data)`
-      : str`"${keyword}" keyword is invalid ($data)`,
+    { throw new Error("STUB"); },
 }
 
 export interface ErrorPaths {
@@ -43,23 +41,13 @@ export function reportExtraError(
   error: KeywordErrorDefinition = keywordError,
   errorPaths?: ErrorPaths
 ): void {
-  const {it} = cxt
-  const {gen, compositeRule, allErrors} = it
-  const errObj = errorObjectCode(cxt, error, errorPaths)
-  addError(gen, errObj)
-  if (!(compositeRule || allErrors)) {
-    returnErrors(it, N.vErrors)
-  }
+    throw new Error("STUB");
 }
 
 export function resetErrorsCount(gen: CodeGen, errsCount: Name): void {
   gen.assign(N.errors, errsCount)
   gen.if(_`${N.vErrors} !== null`, () =>
-    gen.if(
-      errsCount,
-      () => gen.assign(_`${N.vErrors}.length`, errsCount),
-      () => gen.assign(N.vErrors, null)
-    )
+    { throw new Error("STUB"); }
   )
 }
 
@@ -75,15 +63,7 @@ export function extendErrors({
   if (errsCount === undefined) throw new Error("ajv implementation error")
   const err = gen.name("err")
   gen.forRange("i", errsCount, N.errors, (i) => {
-    gen.const(err, _`${N.vErrors}[${i}]`)
-    gen.if(_`${err}.instancePath === undefined`, () =>
-      gen.assign(_`${err}.instancePath`, strConcat(N.instancePath, it.errorPath))
-    )
-    gen.assign(_`${err}.schemaPath`, str`${it.errSchemaPath}/${keyword}`)
-    if (it.opts.verbose) {
-      gen.assign(_`${err}.schema`, schemaValue)
-      gen.assign(_`${err}.data`, data)
-    }
+      throw new Error("STUB");
   })
 }
 
@@ -91,7 +71,7 @@ function addError(gen: CodeGen, errObj: Code): void {
   const err = gen.const("err", errObj)
   gen.if(
     _`${N.vErrors} === null`,
-    () => gen.assign(N.vErrors, _`[${err}]`),
+    () => { throw new Error("STUB"); },
     _`${N.vErrors}.push(${err})`
   )
   gen.code(_`${N.errors}++`)

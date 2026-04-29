@@ -31,18 +31,7 @@ export function validateTuple(
   const valid = gen.name("valid")
   const len = gen.const("len", _`${data}.length`)
   schArr.forEach((sch: AnySchema, i: number) => {
-    if (alwaysValidSchema(it, sch)) return
-    gen.if(_`${len} > ${i}`, () =>
-      cxt.subschema(
-        {
-          keyword,
-          schemaProp: i,
-          dataProp: i,
-        },
-        valid
-      )
-    )
-    cxt.ok(valid)
+      throw new Error("STUB");
   })
 
   function checkStrictTuple(sch: AnySchemaObject): void {

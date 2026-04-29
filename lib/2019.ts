@@ -21,20 +21,11 @@ export class Ajv2019 extends AjvCore {
   }
 
   _addVocabularies(): void {
-    super._addVocabularies()
-    this.addVocabulary(dynamicVocabulary)
-    draft7Vocabularies.forEach((v) => this.addVocabulary(v))
-    this.addVocabulary(nextVocabulary)
-    this.addVocabulary(unevaluatedVocabulary)
-    if (this.opts.discriminator) this.addKeyword(discriminator)
+      throw new Error("STUB");
   }
 
   _addDefaultMetaSchema(): void {
-    super._addDefaultMetaSchema()
-    const {$data, meta} = this.opts
-    if (!meta) return
-    addMetaSchema2019.call(this, $data)
-    this.refs["http://json-schema.org/schema"] = META_SCHEMA_ID
+      throw new Error("STUB");
   }
 
   defaultMeta(): string | AnySchemaObject | undefined {

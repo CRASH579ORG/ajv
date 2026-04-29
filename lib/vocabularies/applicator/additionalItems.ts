@@ -11,8 +11,8 @@ import {alwaysValidSchema, checkStrictMode, Type} from "../../compile/util"
 export type AdditionalItemsError = ErrorObject<"additionalItems", {limit: number}, AnySchema>
 
 const error: KeywordErrorDefinition = {
-  message: ({params: {len}}) => str`must NOT have more than ${len} items`,
-  params: ({params: {len}}) => _`{limit: ${len}}`,
+  message: ({params: {len}}) => { throw new Error("STUB"); },
+  params: ({params: {len}}) => { throw new Error("STUB"); },
 }
 
 const def: CodeKeywordDefinition = {
@@ -41,14 +41,13 @@ export function validateAdditionalItems(cxt: KeywordCxt, items: AnySchema[]): vo
     cxt.pass(_`${len} <= ${items.length}`)
   } else if (typeof schema == "object" && !alwaysValidSchema(it, schema)) {
     const valid = gen.var("valid", _`${len} <= ${items.length}`) // TODO var
-    gen.if(not(valid), () => validateItems(valid))
+    gen.if(not(valid), () => { throw new Error("STUB"); })
     cxt.ok(valid)
   }
 
   function validateItems(valid: Name): void {
     gen.forRange("i", items.length, len, (i) => {
-      cxt.subschema({keyword, dataProp: i, dataPropType: Type.Num}, valid)
-      if (!it.allErrors) gen.if(not(valid), () => gen.break())
+        throw new Error("STUB");
     })
   }
 }

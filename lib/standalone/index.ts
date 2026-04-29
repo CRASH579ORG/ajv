@@ -17,7 +17,7 @@ function standaloneCode(
     : refsOrFunc !== undefined
     ? multiExportsCode<string>(refsOrFunc, getValidate)
     : multiExportsCode<SchemaEnv>(ajv.schemas, (sch) =>
-        sch.meta ? undefined : ajv.compile(sch.schema)
+        { throw new Error("STUB"); }
       )
 
   function getValidate(id: string): AnyValidateFunction {
@@ -66,20 +66,7 @@ function standaloneCode(
     return s.evaluated ? _`${code}${s.validateName}.evaluated = ${s.evaluated};${_n}` : code
 
     function refValidateCode(n: ValueScopeName): Code | undefined {
-      const vRef = n.value?.ref
-      if (n.prefix === "validate" && typeof vRef == "function") {
-        const v = vRef as AnyValidateFunction
-        return validateCode(usedValues, v.source)
-      } else if ((n.prefix === "root" || n.prefix === "wrapper") && typeof vRef == "object") {
-        const {validate, validateName} = vRef as SchemaEnv
-        if (!validateName) throw new Error("ajv internal error")
-        const def = ajv.opts.code.es5 ? varKinds.var : varKinds.const
-        const wrapper = _`${def} ${n} = {validate: ${validateName}};`
-        if (usedState(validateName) === UsedValueState.Started) return wrapper
-        const vCode = validateCode(usedValues, validate?.source)
-        return _`${wrapper}${_n}${vCode}`
-      }
-      return undefined
+        throw new Error("STUB");
     }
 
     function usedState(name: ValueScopeName): UsedValueState | undefined {

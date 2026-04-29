@@ -28,8 +28,8 @@ const def: CodeKeywordDefinition = {
 
     cxt.failResult(
       valid,
-      () => cxt.reset(),
-      () => cxt.error()
+      () => { throw new Error("STUB"); },
+      () => { throw new Error("STUB"); }
     )
   },
   error: {message: "must NOT be valid"},
